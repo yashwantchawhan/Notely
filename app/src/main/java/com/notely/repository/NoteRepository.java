@@ -20,6 +20,6 @@ public interface NoteRepository {
 
     long insert(Note note);
 
-    int delete(Note note);
+    int delete(int id);
 }
 

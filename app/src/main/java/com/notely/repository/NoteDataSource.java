@@ -38,7 +38,7 @@ public class NoteDataSource implements NoteRepository {
 
 
     @Override
-    public int delete(Note note) {
-        return noteDao.delete(note);
+    public int delete(int id) {
+        return noteDao.delete(id);
     }
 }

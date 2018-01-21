@@ -17,6 +17,20 @@ public class Note {
     private boolean star;
     private boolean favourite;
 
+
+    public Note(){
+
+    }
+
+    public Note(String type, String title, String gist, boolean star, boolean favourite) {
+        this.type = type;
+        this.title = title;
+        this.gist = gist;
+        this.star = star;
+        this.favourite = favourite;
+
+    }
+
     public int getId() {
         return id;
     }
