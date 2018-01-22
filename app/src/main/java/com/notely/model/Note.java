@@ -19,7 +19,18 @@ public class Note {
     private boolean favourite;
 
 
-    public Note(){
+    public Note() {
+
+    }
+
+    public Note(NoteBuilder noteBuilder) {
+        this.title = noteBuilder.title;
+        this.gist = noteBuilder.gist;
+        this.type = noteBuilder.type;
+        this.time_created = noteBuilder.timeCreated;
+        this.star = noteBuilder.isStar;
+        this.favourite = noteBuilder.isFavourite;
+
 
     }
 
@@ -86,5 +97,47 @@ public class Note {
 
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
+    }
+
+    public static class NoteBuilder {
+        private String title;
+        private String gist;
+        private String type;
+        private long timeCreated;
+        private boolean isStar;
+        private boolean isFavourite;
+
+        public NoteBuilder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public NoteBuilder setGist(String gist) {
+            this.gist = gist;
+            return this;
+        }
+
+        public NoteBuilder setType(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public NoteBuilder setTimeCreated(long timeCreated) {
+            this.timeCreated = timeCreated;
+            return this;
+        }
+
+        public NoteBuilder isStar(boolean isStar) {
+            this.isStar = isStar;
+            return this;
+        }
+
+        public NoteBuilder isFavourite(boolean isFavourite) {
+            this.isFavourite = isFavourite;
+            return this;
+        }
+        public Note build() {
+            return new Note(this);
+        }
     }
 }

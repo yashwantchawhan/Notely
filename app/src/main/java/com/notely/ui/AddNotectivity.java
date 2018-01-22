@@ -31,7 +31,7 @@ public class AddNotectivity extends AppCompatActivity {
     EditText etTitle;
     EditText etGist;
     RadioGroup rgNoteType;
-    String noteType="";
+    String noteType = "";
 
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
@@ -47,21 +47,21 @@ public class AddNotectivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
 
 
-        etTitle=findViewById(R.id.etTitle);
-        etGist=findViewById(R.id.etGist);
-        rgNoteType=findViewById(R.id.rgNoteType);
+        etTitle = findViewById(R.id.etTitle);
+        etGist = findViewById(R.id.etGist);
+        rgNoteType = findViewById(R.id.rgNoteType);
 
         rgNoteType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-               switch (checkedId){
-                   case R.id.rbStory:
-                       noteType= NoteType.STORY.toString();
-                       break;
-                   case R.id.rbPoem:
-                       noteType= NoteType.POEM.toString();
-                       break;
-               }
+                switch (checkedId) {
+                    case R.id.rbStory:
+                        noteType = NoteType.STORY.toString();
+                        break;
+                    case R.id.rbPoem:
+                        noteType = NoteType.POEM.toString();
+                        break;
+                }
             }
         });
 
@@ -84,14 +84,15 @@ public class AddNotectivity extends AppCompatActivity {
             case R.id.action_undo:
                 break;
             case R.id.action_add:
-                Note note=new Note();
-                note.setTitle(etTitle.getText().toString());
-                note.setGist(etGist.getText().toString());
-                note.setType(etGist.getText().toString());
-                note.setType(noteType);
-                note.setTime_created(new Date().getTime());
-                note.setStar(false);
-                note.setFavourite(false);
+
+                Note note = new Note.NoteBuilder()
+                        .setTitle(etTitle.getText().toString())
+                        .setGist(etGist.getText().toString())
+                        .setType(noteType)
+                        .setTimeCreated(new Date().getTime())
+                        .isStar(false)
+                        .isFavourite(false)
+                        .build();
 
                 mDisposable.add(mViewModel.insertNote(note)
                         .subscribeOn(Schedulers.io())
