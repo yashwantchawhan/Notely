@@ -13,6 +13,7 @@ public class Note {
     private int id;
     private String type;
     private String title;
+    private long time_created;
     private String gist;
     private boolean star;
     private boolean favourite;
@@ -29,6 +30,14 @@ public class Note {
         this.star = star;
         this.favourite = favourite;
 
+    }
+
+    public long getTime_created() {
+        return time_created;
+    }
+
+    public void setTime_created(long time_created) {
+        this.time_created = time_created;
     }
 
     public int getId() {

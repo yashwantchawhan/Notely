@@ -9,6 +9,7 @@ import com.notely.db.AppDatabase;
 import com.notely.model.Note;
 import com.notely.repository.NoteDao;
 
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,8 +18,7 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.util.List;
 
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -32,7 +32,6 @@ public class NoteDaoTest {
     Context context;
 
     private static final Note NOTE = new Note("type", "title", "description", true, false);
-
 
     @Before
     public void createDb() {
@@ -49,24 +48,27 @@ public class NoteDaoTest {
 
     @Test
     public void insertNoteAndReadInList() throws Exception {
+        // Given that we have a user in the data source
         mNoteDao.insert(NOTE);
+        //when get inserted user from data source
         List<Note> list = LiveDataTestUtil.getValue(mNoteDao.getNotes());
-        assertThat(list.get(0).getTitle(), equalTo(NOTE.getTitle()));
+        //then
+        assertThat(list.get(0).getTitle(), Matchers.equalTo(NOTE.getTitle()));
 
     }
 
     @Test
     public void loadByIdTest() throws InterruptedException {
+        // Given that we have a user in the data source
         mNoteDao.insert(NOTE);
         Note note = LiveDataTestUtil.getValue(mNoteDao.loadById(1));
-        assertThat(note.getTitle(), equalTo(NOTE.getTitle()));
+        assertThat(note.getTitle(), Matchers.equalTo(NOTE.getTitle()));
     }
 
     @Test
     public void deleteAndGetUser() throws InterruptedException {
         // Given that we have a user in the data source
         mNoteDao.insert(NOTE);
-        //When we are deleting all users
         mNoteDao.delete(1);
         Note note = LiveDataTestUtil.getValue(mNoteDao.loadById(1));
         assertNull(note);

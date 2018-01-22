@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#F5F5F5</color>
+    <color name="colorPrimaryDark">#616161</color>
+    <color name="colorAccent">#607D8B</color>
+
+
+    <!--Notes list item color-->
+    <color name="note_title">#2b2b2b</color>
+    <color name="note_gist">#9a9a9a</color>
+    <color name="note_date">#d5d5d5</color>
+
+
 </resources>
