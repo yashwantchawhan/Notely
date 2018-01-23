@@ -3,11 +3,14 @@ package com.notely.ui;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 
 import com.notely.R;
@@ -22,17 +25,22 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class AddNotectivity extends AppCompatActivity {
 
+    private static final long DELAY_IN_FINISH = 1000;
     private Menu mMenu;
     EditText etTitle;
     EditText etGist;
     RadioGroup rgNoteType;
+    ProgressBar progressBar;
+    LinearLayout parentLinearLayout;
     String noteType = "";
 
+
+    ;
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
     private NoteViewModel mViewModel;
@@ -46,11 +54,11 @@ public class AddNotectivity extends AppCompatActivity {
         ((NoteApplication) getApplication()).getAppComponent().inject(this);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
 
-
+        parentLinearLayout = findViewById(R.id.parentLinearLayout);
+        progressBar = findViewById(R.id.progressBar);
         etTitle = findViewById(R.id.etTitle);
         etGist = findViewById(R.id.etGist);
         rgNoteType = findViewById(R.id.rgNoteType);
-
         rgNoteType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -65,6 +73,13 @@ public class AddNotectivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        parentLinearLayout.setVisibility(View.VISIBLE);
 
     }
 
@@ -85,6 +100,8 @@ public class AddNotectivity extends AppCompatActivity {
                 break;
             case R.id.action_add:
 
+                showLoading();
+
                 Note note = new Note.NoteBuilder()
                         .setTitle(etTitle.getText().toString())
                         .setGist(etGist.getText().toString())
@@ -97,13 +114,16 @@ public class AddNotectivity extends AppCompatActivity {
                 mDisposable.add(mViewModel.insertNote(note)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action() {
-                            @Override
-                            public void run() throws Exception {
-
-                                Log.d("ListNotesActivity", "run: " + "Record Added");
+                        .doOnError(Timber::e)
+                        .subscribe(() -> {
+                            final Handler handler = new Handler();
+                            handler.postDelayed(() -> {
                                 finish();
-                            }
+                                hideLoading();
+
+                            }, DELAY_IN_FINISH);
+
+
                         }));
 
 
@@ -118,6 +138,15 @@ public class AddNotectivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mDisposable.dispose();
+    }
+
+    public void showLoading() {
+        parentLinearLayout.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLoading() {
+        progressBar.setVisibility(View.GONE);
     }
 
 

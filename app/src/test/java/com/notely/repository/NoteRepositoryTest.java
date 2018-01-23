@@ -2,6 +2,7 @@ package com.notely.repository;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 
+import com.notely.db.NoteDao;
 import com.notely.model.Note;
 
 import org.junit.Before;

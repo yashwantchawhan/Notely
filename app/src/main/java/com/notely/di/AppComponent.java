@@ -3,7 +3,7 @@ package com.notely.di;
 import android.app.Application;
 
 import com.notely.db.AppDatabase;
-import com.notely.repository.NoteDao;
+import com.notely.db.NoteDao;
 import com.notely.repository.NoteRepository;
 import com.notely.ui.AddNotectivity;
 import com.notely.ui.ListNotesActivity;

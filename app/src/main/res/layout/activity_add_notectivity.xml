@@ -1,59 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.notely.ui.AddNotectivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
-    <EditText
-        android:id="@+id/etTitle"
+    <LinearLayout
+        android:id="@+id/parentLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Title of the story" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etGist"
-        style="@style/Base.TextAppearance.AppCompat.Large"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fafafa"
-        android:ems="10"
-        android:enabled="true"
-        android:focusable="true"
-        android:gravity="top"
-        android:hint="Type your quote here"
-        android:inputType="textMultiLine"
-        android:isScrollContainer="true"
-        android:maxLines="6"
-        android:minLines="6"
-        android:padding="24dp"
-        android:textIsSelectable="true" />
-
-    <RadioGroup
-        android:id="@+id/rgNoteType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Note Type" />
+            android:hint="Title of the story" />
 
-        <RadioButton
-            android:id="@+id/rbStory"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etGist"
+            style="@style/Base.TextAppearance.AppCompat.Large"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Story" />
+            android:background="#fafafa"
+            android:ems="10"
+            android:enabled="true"
+            android:focusable="true"
+            android:gravity="top"
+            android:hint="Type your quote here"
+            android:inputType="textMultiLine"
+            android:isScrollContainer="true"
+            android:maxLines="6"
+            android:minLines="6"
+            android:padding="24dp"
+            android:textIsSelectable="true" />
 
-        <RadioButton
-            android:id="@+id/rbPoem"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/rgNoteType"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Poem" />
-    </RadioGroup>
+            android:orientation="horizontal">
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Note Type" />
+
+            <RadioButton
+                android:id="@+id/rbStory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Story" />
+
+            <RadioButton
+                android:id="@+id/rbPoem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Poem" />
+        </RadioGroup>
+    </LinearLayout>
+
+
+</RelativeLayout>

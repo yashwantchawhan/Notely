@@ -9,6 +9,7 @@
     <color name="note_title">#2b2b2b</color>
     <color name="note_gist">#9a9a9a</color>
     <color name="note_date">#d5d5d5</color>
+    <color name="delete_view_background">#e02a42</color>
 
 
 </resources>

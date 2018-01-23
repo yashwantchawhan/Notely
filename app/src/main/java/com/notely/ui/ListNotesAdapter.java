@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.notely.R;
 import com.notely.model.Note;
+import com.notely.utility.ItemTouchHelperAdapter;
+import com.notely.utility.RecyclerItemTouchHelper;
 
 import java.util.List;
 
@@ -16,9 +19,10 @@ import java.util.List;
  * Created by yashwant on 22/01/18.
  */
 
-public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteViewHolder> {
+public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.NoteViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Note> noteArrayList;
+    private ListNotesAdapterActionListener adapterActionListener;
 
     public ListNotesAdapter(List<Note> noteArrayList) {
         this.noteArrayList = noteArrayList;
@@ -60,13 +64,28 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
         notifyDataSetChanged();
     }
 
-    class NoteViewHolder extends RecyclerView.ViewHolder {
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        return false;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        if(position!=RecyclerView.NO_POSITION){
+            adapterActionListener.onItemSwipe(noteArrayList.get(position),position);
+        }
+    }
+
+    public class NoteViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle;
         TextView tvGist;
         TextView tvDate;
         ImageView ivStar;
         ImageView ivFavourite;
-        ViewGroup viewGroupParent;
+        RelativeLayout backGround;
+        public RelativeLayout foreGround;
+
 
         public NoteViewHolder(View itemView) {
             super(itemView);
@@ -75,10 +94,12 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
             tvDate = itemView.findViewById(R.id.tvDate);
             ivStar = itemView.findViewById(R.id.ivStar);
             ivFavourite = itemView.findViewById(R.id.ivFavourite);
-            viewGroupParent=itemView.findViewById(R.id.rlParent);
+            backGround=itemView.findViewById(R.id.background);
+            foreGround=itemView.findViewById(R.id.foreGround);
 
 
-            viewGroupParent.setOnClickListener(new View.OnClickListener() {
+
+            foreGround.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {
@@ -105,5 +126,29 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
                 }
             });
         }
+    }
+
+    public interface ListNotesAdapterActionListener {
+        void onListItemClicked();
+        void onItemSwipe(Note note,int position);
+
+    }
+
+    public void setAdapterActionListener(ListNotesAdapterActionListener adapterActionListener) {
+        this.adapterActionListener = adapterActionListener;
+    }
+
+    public void removeItem(int position) {
+        noteArrayList.remove(position);
+        // notify the item removed by position
+        // to perform recycler view delete animations
+        // NOTE: don't call notifyDataSetChanged()
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Note item, int position) {
+        noteArrayList.add(position, item);
+        // notify item added by position
+        notifyItemInserted(position);
     }
 }

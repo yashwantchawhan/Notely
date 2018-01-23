@@ -6,4 +6,6 @@
     <dimen name="star_icon_size">40dp</dimen>
     <dimen name="list_height_size">88dp</dimen>
     <dimen name="list_margin_top">8dp</dimen>
+    <dimen name="delete">40dp</dimen>
+    <dimen name="padd_10">10dp</dimen>
 </resources>

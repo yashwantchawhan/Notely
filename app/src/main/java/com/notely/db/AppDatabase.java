@@ -4,7 +4,6 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
 import com.notely.model.Note;
-import com.notely.repository.NoteDao;
 
 import javax.inject.Singleton;
 

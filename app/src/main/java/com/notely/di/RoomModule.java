@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.persistence.room.Room;
 
 import com.notely.db.AppDatabase;
-import com.notely.repository.NoteDao;
+import com.notely.db.NoteDao;
 import com.notely.repository.NoteDataSource;
 import com.notely.repository.NoteRepository;
 import com.notely.viewmodel.ViewModelFactory;

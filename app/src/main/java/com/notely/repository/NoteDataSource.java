@@ -2,6 +2,7 @@ package com.notely.repository;
 
 import android.arch.lifecycle.LiveData;
 
+import com.notely.db.NoteDao;
 import com.notely.model.Note;
 
 import java.util.List;

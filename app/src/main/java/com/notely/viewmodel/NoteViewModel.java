@@ -31,11 +31,10 @@ public class NoteViewModel extends ViewModel {
     }
 
     public Completable insertNote(final Note note) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Exception {
-                repository.insert(note);
-            }
-        });
+        return Completable.fromAction(() -> repository.insert(note));
+    }
+
+    public Completable deleteNote(final int id) {
+        return Completable.fromAction(() -> repository.delete(id));
     }
 }

@@ -7,7 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.notely.db.AppDatabase;
 import com.notely.model.Note;
-import com.notely.repository.NoteDao;
+import com.notely.db.NoteDao;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
