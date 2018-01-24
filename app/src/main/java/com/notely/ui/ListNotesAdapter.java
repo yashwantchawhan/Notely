@@ -103,7 +103,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
                 @Override
                 public void onClick(View v) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-
+                       adapterActionListener.onListItemClicked(noteArrayList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -129,7 +129,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
     }
 
     public interface ListNotesAdapterActionListener {
-        void onListItemClicked();
+        void onListItemClicked(Note note);
         void onItemSwipe(Note note,int position);
 
     }

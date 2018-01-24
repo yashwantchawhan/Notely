@@ -36,6 +36,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class ListNotesActivity extends AppCompatActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
+    public static final String NOTE_ITEM = "note_item";
     RecyclerView rvNotes;
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
@@ -106,7 +107,11 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     }
 
     @Override
-    public void onListItemClicked() {
+    public void onListItemClicked(Note note) {
+        Intent intent=new Intent(this,DetailsNoteActivity.class);
+        intent.putExtra(NOTE_ITEM,note);
+        startActivity(intent);
+
 
     }
 

@@ -2,13 +2,15 @@ package com.notely.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by yashwant on 21/01/18.
  */
 
 @Entity
-public class Note {
+public class Note implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String type;
@@ -42,6 +44,44 @@ public class Note {
         this.favourite = favourite;
 
     }
+
+    protected Note(Parcel in) {
+        id = in.readInt();
+        type = in.readString();
+        title = in.readString();
+        time_created = in.readLong();
+        gist = in.readString();
+        star = in.readByte() != 0;
+        favourite = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(type);
+        dest.writeString(title);
+        dest.writeLong(time_created);
+        dest.writeString(gist);
+        dest.writeByte((byte) (star ? 1 : 0));
+        dest.writeByte((byte) (favourite ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
+        @Override
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        @Override
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
 
     public long getTime_created() {
         return time_created;
