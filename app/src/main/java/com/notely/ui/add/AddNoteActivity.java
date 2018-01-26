@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.notely.R;
 import com.notely.app.NoteApplication;
@@ -120,31 +122,37 @@ public class AddNoteActivity extends AppCompatActivity {
                 helper.undo();
                 break;
             case R.id.action_add:
-                mMenu.findItem(R.id.action_undo).setVisible(false);
-                showLoading();
-                Note note = new Note.NoteBuilder()
-                        .setTitle(etTitle.getText().toString())
-                        .setGist(etGist.getText().toString())
-                        .setType(noteType)
-                        .setTimeCreated(new Date().getTime())
-                        .isStar(false)
-                        .isFavourite(false)
-                        .build();
 
-                mDisposable.add(mViewModel.insertNote(note)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError(Timber::e)
-                        .subscribe(() -> {
-                            final Handler handler = new Handler();
-                            handler.postDelayed(() -> {
-                                finish();
-                                hideLoading();
+                if (!TextUtils.isEmpty(etTitle.getText()) && !TextUtils.isEmpty(etGist.getText())) {
+                    mMenu.findItem(R.id.action_undo).setVisible(false);
+                    showLoading();
+                    Note note = new Note.NoteBuilder()
+                            .setTitle(etTitle.getText().toString())
+                            .setGist(etGist.getText().toString())
+                            .setType(noteType)
+                            .setTimeCreated(new Date().getTime())
+                            .isStar(false)
+                            .isFavourite(false)
+                            .build();
 
-                            }, DELAY_IN_FINISH);
+                    mDisposable.add(mViewModel.insertNote(note)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnError(Timber::e)
+                            .subscribe(() -> {
+                                final Handler handler = new Handler();
+                                handler.postDelayed(() -> {
+                                    finish();
+                                    hideLoading();
+
+                                }, DELAY_IN_FINISH);
 
 
-                        }));
+                            }));
+                } else {
+                    Toast.makeText(this, getString(R.string.aler_info), Toast.LENGTH_SHORT).show();
+
+                }
 
 
                 break;

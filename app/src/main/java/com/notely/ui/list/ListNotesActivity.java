@@ -235,8 +235,8 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
         // showing snack bar with Undo option
         Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, note.getTitle() + " removed from cart!", Snackbar.LENGTH_LONG);
-        snackbar.setAction("UNDO", new View.OnClickListener() {
+                .make(coordinatorLayout, note.getTitle() + getString(R.string.delete_message), Snackbar.LENGTH_LONG);
+        snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mDisposable.add(mViewModel.insertNote(note)
