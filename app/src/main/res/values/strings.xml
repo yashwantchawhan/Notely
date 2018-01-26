@@ -16,4 +16,6 @@
     <string name="aler_info">Title/Gist should  not be empty</string>
     <string name="undo">UNDO</string>
     <string name="delete_message">Deleted Successfully</string>
+    <string name="bullet">\u2022</string>
+
 </resources>

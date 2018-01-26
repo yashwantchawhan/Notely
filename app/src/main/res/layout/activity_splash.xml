@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.notely.ui.splash.SplashActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="90dp"
+        android:background="@android:color/darker_gray"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/title"
+        android:layout_height="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/line"
+        android:layout_alignBottom="@+id/line"
+        android:layout_toEndOf="@+id/title"
+        android:gravity="bottom"
+        android:text="@string/bullet"
+        android:textColor="@color/filter_check"
+        android:textSize="40sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/line"
+        android:layout_alignBottom="@+id/line"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/title"
+        android:textColor="@color/golden"
+        android:gravity="bottom"
+        android:text="@string/bullet"
+        android:textSize="40sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/line"
+        android:layout_alignBottom="@+id/line"
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/title"
+        android:gravity="bottom"
+        android:text="@string/bullet"
+        android:textSize="40sp" />
+
+
+</RelativeLayout>
