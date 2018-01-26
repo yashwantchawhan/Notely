@@ -122,4 +122,10 @@ public class DetailsNoteActivity extends BaseActivity {
             menu.findItem(R.id.action_edit).setVisible(true);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishWithTransition();
+    }
 }

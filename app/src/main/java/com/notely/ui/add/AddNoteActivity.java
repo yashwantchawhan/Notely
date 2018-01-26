@@ -170,5 +170,11 @@ public class AddNoteActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishWithTransition();
+    }
+
 
 }
