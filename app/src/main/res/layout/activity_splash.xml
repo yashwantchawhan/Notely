@@ -7,22 +7,22 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="90dp"
+        android:layout_width="@dimen/padd_90"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/app_name"
-        android:textSize="30sp"
+        android:textSize="@dimen/splash_screen_title"
         android:textStyle="bold" />
 
 
     <TextView
         android:id="@+id/line"
-        android:layout_width="90dp"
+        android:layout_width="@dimen/padd_90"
         android:background="@android:color/darker_gray"
         android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/padd_10"
         android:layout_below="@+id/title"
-        android:layout_height="2dp" />
+        android:layout_height="@dimen/padd_2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,19 +33,19 @@
         android:gravity="bottom"
         android:text="@string/bullet"
         android:textColor="@color/filter_check"
-        android:textSize="40sp" />
+        android:textSize="@dimen/bullet_size" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/line"
         android:layout_alignBottom="@+id/line"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/padd_10"
         android:layout_toEndOf="@+id/title"
         android:textColor="@color/golden"
         android:gravity="bottom"
         android:text="@string/bullet"
-        android:textSize="40sp" />
+        android:textSize="@dimen/bullet_size" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,11 +53,11 @@
         android:layout_alignBaseline="@+id/line"
         android:layout_alignBottom="@+id/line"
         android:textColor="@android:color/holo_red_dark"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="@dimen/padd_20"
         android:layout_toEndOf="@+id/title"
         android:gravity="bottom"
         android:text="@string/bullet"
-        android:textSize="40sp" />
+        android:textSize="@dimen/bullet_size" />
 
 
 </RelativeLayout>
