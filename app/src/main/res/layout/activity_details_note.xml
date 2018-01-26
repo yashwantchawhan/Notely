@@ -28,7 +28,7 @@
                 android:paddingRight="@dimen/padding_right"
                 android:text="Title"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textStyle="bold|italic|normal" />
+                android:textStyle="bold|normal" />
 
             <TextView
                 android:id="@+id/tvDateUpdated"

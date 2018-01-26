@@ -21,4 +21,5 @@
     <dimen name="padd_16">16dp</dimen>
     <dimen name="padd_200">200dp</dimen>
     <dimen name="padd_10">10dp</dimen>
+    <dimen name="padd_5">5dp</dimen>
 </resources>

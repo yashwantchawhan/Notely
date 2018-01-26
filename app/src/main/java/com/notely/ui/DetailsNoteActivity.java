@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Note;
+import com.notely.utility.Helper;
 import com.notely.utility.TextViewUndoRedo;
 import com.notely.viewmodel.NoteViewModel;
 
@@ -26,6 +28,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
     private Menu mMenu;
     private EditText editTitle;
     private EditText editGist;
+    private TextView tvDateUpdated;
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
     private NoteViewModel mViewModel;
@@ -46,6 +49,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         editTitle = findViewById(R.id.etTitle);
         editGist = findViewById(R.id.etGist);
+        tvDateUpdated=findViewById(R.id.tvDateUpdated);
          helper= new TextViewUndoRedo(editGist);
 
 
@@ -53,6 +57,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
             note = getIntent().getParcelableExtra(ListNotesActivity.NOTE_ITEM);
             editTitle.setText(note.getTitle());
             editGist.setText(note.getGist());
+            tvDateUpdated.setText(Helper.getDate(this,note.getTime_created()));
 
         }
 
