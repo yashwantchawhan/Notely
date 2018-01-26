@@ -59,9 +59,8 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     private View coordinatorLayout;
     private ItemTouchHelper mItemTouchHelper;
     private AlertDialog alertDialog;
-    private boolean isFilterApplied=false;
+    private boolean isFilterApplied = false;
     private Observer<List<Note>> noteObserver;
-
 
 
     @Override
@@ -119,14 +118,14 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_filter:
-                if(isFilterApplied){
-                    mViewModel.getNotes().observe(this,noteObserver);
-                    isFilterApplied=false;
+                if (isFilterApplied) {
+                    mViewModel.getNotes().observe(this, noteObserver);
+                    isFilterApplied = false;
                 }
                 View view = getLayoutInflater().inflate(R.layout.filter_list, null);
                 find_views(view);
 
-               alertDialog= new AlertDialog.Builder(this)
+                alertDialog = new AlertDialog.Builder(this)
                         .setView(view)
                         .show();
 
@@ -153,7 +152,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
                 if (filter.isChecked()) {
                     switch (filter.getFilterType()) {
                         case Poem:
-                            queryBuilder.append("type='" + NoteType.POEM.toString()+"'");
+                            queryBuilder.append("type='" + NoteType.POEM.toString() + "'");
                             break;
                         case Star:
                             if (queryBuilder.toString().isEmpty()) {
@@ -171,31 +170,29 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
                             break;
                         case Story:
                             if (queryBuilder.toString().isEmpty()) {
-                                queryBuilder.append("type='" + NoteType.STORY.toString()+"'");
+                                queryBuilder.append("type='" + NoteType.STORY.toString() + "'");
                             } else {
-                                if(queryBuilder.toString().contains(NoteType.POEM.toString())){
-                                    queryBuilder.append(" OR type='" + NoteType.STORY.toString()+"'");
+                                if (queryBuilder.toString().contains(NoteType.POEM.toString())) {
+                                    queryBuilder.append(" OR type='" + NoteType.STORY.toString() + "'");
 
-                                }else {
-                                    queryBuilder.append(" AND type='" + NoteType.STORY.toString()+"'");
+                                } else {
+                                    queryBuilder.append(" AND type='" + NoteType.STORY.toString() + "'");
 
                                 }
                             }
                             break;
 
 
-
-
                     }
                 }
             }
-            mViewModel.filteredNotes(queryBuilder.toString().isEmpty()?SELECT_QUERY_ALL: FILTER_QUERY +queryBuilder.toString()+ORDER_BY).observe(ListNotesActivity.this, new Observer<List<Note>>() {
+            mViewModel.filteredNotes(queryBuilder.toString().isEmpty() ? SELECT_QUERY_ALL : FILTER_QUERY + queryBuilder.toString() + ORDER_BY).observe(ListNotesActivity.this, new Observer<List<Note>>() {
                 @Override
                 public void onChanged(@Nullable List<Note> notes) {
                     Log.d("", "onChanged: " + notes.size());
                     if (notes != null && notes.size() > 0) {
                         alertDialog.dismiss();
-                        isFilterApplied=true;
+                        isFilterApplied = true;
                         Log.d("ListNoteActivity", "onChanged: " + notes.size());
                         listNotesAdapter.filterList(notes);
                         tvNoRecord.setVisibility(View.GONE);
@@ -256,7 +253,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     }
 
     @Override
-    public void onStarOrFavClicked(Note note,int position) {
+    public void onStarOrFavClicked(Note note, int position) {
         mDisposable.add(mViewModel.updateNote(note)
                 .subscribeOn(Schedulers.io())
                 .observeOn(

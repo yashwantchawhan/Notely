@@ -50,6 +50,6 @@ public class NoteDataSource implements NoteRepository {
 
     @Override
     public void updateNote(Note note) {
-         noteDao.updateNote(note);
+        noteDao.updateNote(note);
     }
 }

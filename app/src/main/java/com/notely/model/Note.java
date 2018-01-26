@@ -176,6 +176,7 @@ public class Note implements Parcelable {
             this.isFavourite = isFavourite;
             return this;
         }
+
         public Note build() {
             return new Note(this);
         }
