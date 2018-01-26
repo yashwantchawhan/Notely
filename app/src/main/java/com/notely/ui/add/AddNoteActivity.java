@@ -43,7 +43,7 @@ public class AddNoteActivity extends BaseActivity {
     private RadioGroup rgNoteType;
     private ProgressBar progressBar;
     private LinearLayout parentLinearLayout;
-    private String noteType = "";
+    private String noteType = NoteType.STORY.toString();
     private TextViewUndoRedo helper;
 
 

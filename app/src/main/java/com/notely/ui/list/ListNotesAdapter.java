@@ -59,7 +59,8 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
     }
 
     public void addItems(List<Note> notes) {
-        this.noteArrayList = notes;
+        noteArrayList.clear();
+        this.noteArrayList.addAll(notes);
         notifyDataSetChanged();
     }
 

@@ -45,9 +45,7 @@ import timber.log.Timber;
 
 public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
     public static final String NOTE_ITEM = "note_item";
-    private static final String FILTER_QUERY = "SELECT * FROM Note WHERE ";
-    private static final String SELECT_QUERY_ALL = "SELECT * FROM Note ORDER BY time_created DESC";
-    private static final String ORDER_BY = "ORDER BY time_created DESC";
+
 
     RecyclerView rvNotes;
     TextView tvNoRecord;
@@ -140,67 +138,10 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
         FilterAdapter filterAdapter = new FilterAdapter(DataManager.getInstance().getFilters());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(filterAdapter);
-
         buttonApply.setOnClickListener(v -> {
-            StringBuilder queryBuilder = new StringBuilder();
-            for (Filter filter : filterAdapter.getFilterList()) {
-                if (filter.isChecked()) {
-                    switch (filter.getFilterType()) {
-                        case Poem:
-                            queryBuilder.append("type='" + NoteType.POEM.toString() + "'");
-                            break;
-                        case Star:
-                            if (queryBuilder.toString().isEmpty()) {
-                                queryBuilder.append("star='" + 1 + "'");
-                            } else {
-                                queryBuilder.append("AND star='" + 1 + "'");
-                            }
-                            break;
-                        case Favourite:
-                            if (queryBuilder.toString().isEmpty()) {
-                                queryBuilder.append("favourite='" + 1 + "'");
-                            } else {
-                                queryBuilder.append("AND favourite='" + 1 + "'");
-                            }
-                            break;
-                        case Story:
-                            if (queryBuilder.toString().isEmpty()) {
-                                queryBuilder.append("type='" + NoteType.STORY.toString() + "'");
-                            } else {
-                                if (queryBuilder.toString().contains(NoteType.POEM.toString())) {
-                                    queryBuilder.append(" OR type='" + NoteType.STORY.toString() + "'");
-
-                                } else {
-                                    queryBuilder.append(" AND type='" + NoteType.STORY.toString() + "'");
-
-                                }
-                            }
-                            break;
-
-
-                    }
-                }
-            }
-            viewModel.filteredNotes(queryBuilder.toString().isEmpty() ? SELECT_QUERY_ALL : FILTER_QUERY + queryBuilder.toString() + ORDER_BY).observe(ListNotesActivity.this, new Observer<List<Note>>() {
-                @Override
-                public void onChanged(@Nullable List<Note> notes) {
-                    Log.d("", "onChanged: " + notes.size());
-                    if (notes != null && notes.size() > 0) {
-                        alertDialog.dismiss();
-                        isFilterApplied = true;
-                        Log.d("ListNoteActivity", "onChanged: " + notes.size());
-                        listNotesAdapter.filterList(notes);
-                        tvNoRecord.setVisibility(View.GONE);
-                        rvNotes.setVisibility(View.VISIBLE);
-
-                    } else {
-                        tvNoRecord.setVisibility(View.VISIBLE);
-                        rvNotes.setVisibility(View.GONE);
-                    }
-
-                }
-            });
-
+            alertDialog.dismiss();
+            isFilterApplied = true;
+            viewModel.filteredNotes(filterAdapter.getFilterList()).observe(ListNotesActivity.this, noteObserver);
         });
     }
 
@@ -228,21 +169,14 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
         // showing snack bar with Undo option
         Snackbar snackbar = Snackbar
                 .make(coordinatorLayout, note.getTitle() + " " + getString(R.string.delete_message), Snackbar.LENGTH_LONG);
-        snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                compositeDisposable.add(viewModel.insertNote(note)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError(Timber::e)
-                        .subscribe(() -> {
-                            // undo is selected, restore the deleted item
-                            listNotesAdapter.restoreItem(note, position);
-                        }));
-
-
-            }
-        });
+        snackbar.setAction(getString(R.string.undo), view -> compositeDisposable.add(viewModel.insertNote(note)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(Timber::e)
+                .subscribe(() -> {
+                    // undo is selected, restore the deleted item
+                    listNotesAdapter.restoreItem(note, position);
+                })));
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
