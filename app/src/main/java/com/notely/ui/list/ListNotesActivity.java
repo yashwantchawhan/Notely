@@ -1,4 +1,4 @@
-package com.notely.ui;
+package com.notely.ui.list;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
@@ -25,6 +25,8 @@ import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Filter;
 import com.notely.model.Note;
+import com.notely.ui.add.AddNoteActivity;
+import com.notely.ui.details.DetailsNoteActivity;
 import com.notely.utility.DataManager;
 import com.notely.utility.NoteType;
 import com.notely.utility.RecyclerItemTouchHelper;
@@ -58,7 +60,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     private ItemTouchHelper mItemTouchHelper;
     private AlertDialog alertDialog;
     private boolean isFilterApplied=false;
-    Observer<List<Note>> noteObserver;
+    private Observer<List<Note>> noteObserver;
 
 
 
@@ -66,13 +68,11 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_notes);
-
+        ((NoteApplication) getApplication()).getAppComponent().inject(this);
         getSupportActionBar().setElevation(0);
-
         rvNotes = findViewById(R.id.rvNotes);
         tvNoRecord = findViewById(R.id.tvNoRecord);
         coordinatorLayout = findViewById(R.id.coordinateLayout);
-        ((NoteApplication) getApplication()).getAppComponent().inject(this);
         listNotesAdapter = new ListNotesAdapter(noteArrayList);
         rvNotes.setLayoutManager(new LinearLayoutManager(this));
         rvNotes.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -82,7 +82,6 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rvNotes);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
-
 
         // Create the observer which updates the UI.
         noteObserver = notes -> {
@@ -118,25 +117,22 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
-
             case R.id.action_filter:
                 if(isFilterApplied){
                     mViewModel.getNotes().observe(this,noteObserver);
                     isFilterApplied=false;
                 }
                 View view = getLayoutInflater().inflate(R.layout.filter_list, null);
-                findviews(view);
+                find_views(view);
 
                alertDialog= new AlertDialog.Builder(this)
                         .setView(view)
                         .show();
 
-
                 break;
             case R.id.action_add:
-                Intent intent = new Intent(ListNotesActivity.this, AddNotectivity.class);
+                Intent intent = new Intent(ListNotesActivity.this, AddNoteActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -144,7 +140,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
     }
 
-    private void findviews(View view) {
+    private void find_views(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.rvFilterList);
         Button buttonApply = view.findViewById(R.id.apply);
         FilterAdapter filterAdapter = new FilterAdapter(DataManager.getInstance().getFilters());

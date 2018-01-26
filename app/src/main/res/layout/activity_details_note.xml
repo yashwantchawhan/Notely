@@ -8,7 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/padd_10"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -24,22 +24,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:paddingLeft="@dimen/padding_left_detail"
-                android:paddingRight="@dimen/padding_right"
-                android:text="Title"
+                android:paddingLeft="@dimen/padd_40"
+                android:paddingRight="@dimen/padd_16"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textStyle="bold|normal" />
 
             <TextView
                 android:id="@+id/tvDateUpdated"
                 android:layout_width="match_parent"
-                android:text="12 may 2018"
-                android:paddingTop="10dp"
+                android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:paddingBottom="16dp"
-                android:paddingLeft="@dimen/padding_left_detail"
-                android:paddingRight="@dimen/padding_right"
-                android:layout_height="wrap_content" />
+                android:paddingLeft="@dimen/padd_40"
+                android:paddingRight="@dimen/padd_16"
+                android:paddingTop="@dimen/padd_10" />
 
 
             <EditText
@@ -47,11 +45,10 @@
                 style="@style/editTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/padd_20"
                 android:background="@android:color/transparent"
-                android:paddingLeft="@dimen/padding_left_detail"
-                android:paddingRight="@dimen/padding_right"
-                 />
+                android:paddingLeft="@dimen/padd_40"
+                android:paddingRight="@dimen/padd_16" />
         </LinearLayout>
     </ScrollView>
 

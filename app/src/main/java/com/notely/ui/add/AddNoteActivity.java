@@ -1,4 +1,4 @@
-package com.notely.ui;
+package com.notely.ui.add;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -31,21 +31,17 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class AddNotectivity extends AppCompatActivity {
+public class AddNoteActivity extends AppCompatActivity {
 
     private static final long DELAY_IN_FINISH = 1000;
     private Menu mMenu;
-    EditText etTitle;
-    EditText etGist;
-    RadioGroup rgNoteType;
-    ProgressBar progressBar;
-    LinearLayout parentLinearLayout;
-    String noteType = "";
-    TextViewUndoRedo helper;
-
-
-
-    ;
+    private EditText etTitle;
+    private EditText etGist;
+    private RadioGroup rgNoteType;
+    private ProgressBar progressBar;
+    private LinearLayout parentLinearLayout;
+    private String noteType = "";
+    private TextViewUndoRedo helper;
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
     private NoteViewModel mViewModel;
@@ -59,25 +55,23 @@ public class AddNotectivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setElevation(0);        ((NoteApplication) getApplication()).getAppComponent().inject(this);
+        getSupportActionBar().setElevation(0);
+        ((NoteApplication) getApplication()).getAppComponent().inject(this);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         parentLinearLayout = findViewById(R.id.parentLinearLayout);
         progressBar = findViewById(R.id.progressBar);
         etTitle = findViewById(R.id.etTitle);
         etGist = findViewById(R.id.etGist);
-        helper= new TextViewUndoRedo(etGist);
+        helper = new TextViewUndoRedo(etGist);
         rgNoteType = findViewById(R.id.rgNoteType);
-        rgNoteType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rbStory:
-                        noteType = NoteType.STORY.toString();
-                        break;
-                    case R.id.rbPoem:
-                        noteType = NoteType.POEM.toString();
-                        break;
-                }
+        rgNoteType.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rbStory:
+                    noteType = NoteType.STORY.toString();
+                    break;
+                case R.id.rbPoem:
+                    noteType = NoteType.POEM.toString();
+                    break;
             }
         });
 
@@ -127,9 +121,7 @@ public class AddNotectivity extends AppCompatActivity {
                 break;
             case R.id.action_add:
                 mMenu.findItem(R.id.action_undo).setVisible(false);
-
                 showLoading();
-
                 Note note = new Note.NoteBuilder()
                         .setTitle(etTitle.getText().toString())
                         .setGist(etGist.getText().toString())

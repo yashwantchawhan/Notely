@@ -3,8 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/filter_background_color"
-    android:paddingBottom="@dimen/padding_parent_filter"
-    android:paddingTop="@dimen/padding_parent_filter">
+    android:paddingBottom="@dimen/padd_40"
+    android:paddingTop="@dimen/padd_40">
 
     <TextView
         android:id="@+id/tvFilter"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rvFilterList"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/padd_20"
         android:background="@drawable/apply_button_shape"
         android:text="@string/apply"
         android:textColor="@android:color/white" />

@@ -1,6 +1,5 @@
-package com.notely.ui;
+package com.notely.ui.list;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,6 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
     public void onBindViewHolder(FilterViewHolder holder, int position) {
 
         holder.tvFilterTitle.setText("" + filterArrayList.get(position).getFilterType().toString());
-
         if (filterArrayList.get(position).isChecked()) {
             holder.ivFilterCheck.setImageDrawable(holder.ivFilterCheck.getResources().getDrawable(R.drawable.ic_check));
             holder.tvFilterTitle.setTextColor(holder.tvFilterTitle.getContext().getResources().getColor(R.color.filter_check));
@@ -67,18 +65,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
             tvFilterTitle = itemView.findViewById(R.id.tvFilterTitle);
             ivFilterCheck = itemView.findViewById(R.id.ivFilterCheck);
             llFilterItemParent = itemView.findViewById(R.id.llFilterItemParent);
-
-            llFilterItemParent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        if (filterArrayList.get(getAdapterPosition()).isChecked()) {
-                            filterArrayList.get(getAdapterPosition()).setChecked(false);
-                        } else {
-                            filterArrayList.get(getAdapterPosition()).setChecked(true);
-                        }
-                        notifyItemChanged(getAdapterPosition());
+            llFilterItemParent.setOnClickListener(v -> {
+                if (getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    if (filterArrayList.get(getAdapterPosition()).isChecked()) {
+                        filterArrayList.get(getAdapterPosition()).setChecked(false);
+                    } else {
+                        filterArrayList.get(getAdapterPosition()).setChecked(true);
                     }
+                    notifyItemChanged(getAdapterPosition());
                 }
             });
         }

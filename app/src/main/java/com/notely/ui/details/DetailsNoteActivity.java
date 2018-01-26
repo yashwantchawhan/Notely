@@ -1,17 +1,20 @@
-package com.notely.ui;
+package com.notely.ui.details;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Note;
+import com.notely.ui.list.ListNotesActivity;
 import com.notely.utility.Helper;
 import com.notely.utility.TextViewUndoRedo;
 import com.notely.viewmodel.NoteViewModel;
@@ -34,7 +37,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
     private NoteViewModel mViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
     private Note note;
-    TextViewUndoRedo helper;
+    private TextViewUndoRedo helper;
 
 
     @Override
@@ -49,19 +52,15 @@ public class DetailsNoteActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         editTitle = findViewById(R.id.etTitle);
         editGist = findViewById(R.id.etGist);
-        tvDateUpdated=findViewById(R.id.tvDateUpdated);
-         helper= new TextViewUndoRedo(editGist);
-
-
+        tvDateUpdated = findViewById(R.id.tvDateUpdated);
+        helper = new TextViewUndoRedo(editGist);
         if (getIntent() != null) {
             note = getIntent().getParcelableExtra(ListNotesActivity.NOTE_ITEM);
             editTitle.setText(note.getTitle());
             editGist.setText(note.getGist());
-            tvDateUpdated.setText(getString(R.string.last_updated)+" "+Helper.getDate(this,note.getTime_created()));
+            tvDateUpdated.setText(getString(R.string.last_updated) + " " + Helper.getDate(this, note.getTime_created()));
 
         }
-
-
     }
 
     @Override
@@ -76,24 +75,26 @@ public class DetailsNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
             case R.id.action_undo:
                 helper.undo(); // perform undo
                 break;
             case R.id.action_save:
-                note.setTitle(editTitle.getText().toString());
-                note.setGist(editGist.getText().toString());
-                mDisposable.add(mViewModel.insertNote(note)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError(Timber::e)
-                        .subscribe(() -> {
-                            setFocusable(false);
-                        }));
+                if (!TextUtils.isEmpty(editTitle.getText()) && !TextUtils.isEmpty(editGist.getText())) {
+                    note.setTitle(editTitle.getText().toString());
+                    note.setGist(editGist.getText().toString());
+                    mDisposable.add(mViewModel.insertNote(note)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .doOnError(Timber::e)
+                            .subscribe(() -> {
+                                setFocusable(false);
+                            }));
+                } else {
+                    Toast.makeText(this, getString(R.string.aler_info), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.action_edit:
                 setFocusable(true);
-
                 break;
 
         }
@@ -111,7 +112,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        note=null;
+        note = null;
         mDisposable.dispose();
     }
 

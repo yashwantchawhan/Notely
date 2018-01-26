@@ -13,4 +13,5 @@
     <string name="title">Title</string>
     <string name="gist">Gist</string>
     <string name="last_updated">Last Updated:</string>
+    <string name="aler_info">Title to Gist should  not be empty</string>
 </resources>

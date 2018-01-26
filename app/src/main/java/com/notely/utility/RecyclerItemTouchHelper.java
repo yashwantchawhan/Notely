@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.notely.ui.ListNotesAdapter;
+import com.notely.ui.list.ListNotesAdapter;
 
 /**
  * Created by ravi on 29/09/17.

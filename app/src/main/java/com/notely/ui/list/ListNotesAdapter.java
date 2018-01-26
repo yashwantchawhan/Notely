@@ -1,4 +1,4 @@
-package com.notely.ui;
+package com.notely.ui.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,7 +40,6 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
         holder.tvTitle.setText("" + note.getTitle());
         holder.tvGist.setText("" + note.getGist());
         holder.tvDate.setText("" + Helper.getDate(holder.tvDate.getContext(), note.getTime_created()));
-
         if (note.isStar()) {
             holder.ivStar.setImageDrawable(holder.ivStar.getContext().getDrawable(R.drawable.ic_star));
         } else {
@@ -112,7 +111,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
                         noteArrayList.get(getAdapterPosition()).setStar(true);
                     }
                     notifyItemChanged(getAdapterPosition());
-                    adapterActionListener.onStarOrFavClicked(noteArrayList.get(getAdapterPosition()),getAdapterPosition());
+                    adapterActionListener.onStarOrFavClicked(noteArrayList.get(getAdapterPosition()), getAdapterPosition());
 
                 }
             });
@@ -125,7 +124,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
                         noteArrayList.get(getAdapterPosition()).setFavourite(true);
                     }
                     notifyItemChanged(getAdapterPosition());
-                    adapterActionListener.onStarOrFavClicked(noteArrayList.get(getAdapterPosition()),getAdapterPosition());
+                    adapterActionListener.onStarOrFavClicked(noteArrayList.get(getAdapterPosition()), getAdapterPosition());
 
                 }
             });
@@ -137,7 +136,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
 
         void onItemSwipe(Note note, int position);
 
-        void onStarOrFavClicked(Note note,int position);
+        void onStarOrFavClicked(Note note, int position);
 
     }
 

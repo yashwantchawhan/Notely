@@ -9,9 +9,10 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/padd_48"
+        android:layout_height="@dimen/padd_48"
         android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:visibility="gone" />
 
     <ScrollView
@@ -28,8 +29,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/padd_10"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padd_10">
 
                 <EditText
                     android:id="@+id/etTitle"
@@ -44,8 +45,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/padd_10"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padd_10">
 
                 <EditText
                     android:id="@+id/etGist"
@@ -61,8 +62,8 @@
             <RadioGroup
                 android:id="@+id/rgNoteType"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/padd_16"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padd_16"
                 android:orientation="horizontal">
 
                 <TextView
@@ -75,16 +76,16 @@
                     android:id="@+id/rbStory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:layout_marginLeft="@dimen/padd_5"
-                    android:text="Story" />
+                    android:checked="true"
+                    android:text="@string/story" />
 
                 <RadioButton
                     android:id="@+id/rbPoem"
                     android:layout_width="wrap_content"
-                    android:layout_marginLeft="@dimen/padd_5"
                     android:layout_height="wrap_content"
-                    android:text="Poem" />
+                    android:layout_marginLeft="@dimen/padd_5"
+                    android:text="@string/poem" />
             </RadioGroup>
         </LinearLayout>
 

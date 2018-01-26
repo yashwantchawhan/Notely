@@ -5,9 +5,9 @@ import android.app.Application;
 import com.notely.db.AppDatabase;
 import com.notely.db.NoteDao;
 import com.notely.repository.NoteRepository;
-import com.notely.ui.AddNotectivity;
-import com.notely.ui.DetailsNoteActivity;
-import com.notely.ui.ListNotesActivity;
+import com.notely.ui.add.AddNoteActivity;
+import com.notely.ui.details.DetailsNoteActivity;
+import com.notely.ui.list.ListNotesActivity;
 
 import javax.inject.Singleton;
 
@@ -31,7 +31,7 @@ public interface AppComponent {
 
     void inject(ListNotesActivity listNotesActivity);
 
-    void inject(AddNotectivity addNotectivity);
+    void inject(AddNoteActivity addNotectivity);
 
     void inject(DetailsNoteActivity detailsNoteActivity);
 }

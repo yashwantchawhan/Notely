@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--Text Size-->
     <dimen name="text_size_title">16sp</dimen>
     <dimen name="text_size_gist">14sp</dimen>
     <dimen name="text_size_date">10sp</dimen>
-    <dimen name="star_icon_size">50dp</dimen>
-    <dimen name="list_height_size">88dp</dimen>
-    <dimen name="list_margin_top">8dp</dimen>
-    <dimen name="delete">40dp</dimen>
-    <dimen name="padd_14">14dp</dimen>
 
-    <dimen name="toolbar_double_height">112dp</dimen>
-    <dimen name="appbar_padding_top">8dp</dimen>
-    <dimen name="appbar_header_height">256dp</dimen>
-    <dimen name="activity_margin_half">8dp</dimen>
-    <dimen name="activity_margin_content">24dp</dimen>
-    <dimen name="padding_right">16dp</dimen>
-    <dimen name="padding_left_detail">40dp</dimen>
-    <dimen name="padding_parent_filter">40dp</dimen>
-    <dimen name="padding_filter">16dp</dimen>
-    <dimen name="padd_16">16dp</dimen>
-    <dimen name="padd_200">200dp</dimen>
-    <dimen name="padd_10">10dp</dimen>
+    <!--different padding-->
     <dimen name="padd_5">5dp</dimen>
+    <dimen name="padd_10">10dp</dimen>
+    <dimen name="padd_14">14dp</dimen>
+    <dimen name="padd_16">16dp</dimen>
+    <dimen name="padd_20">20dp</dimen>
+    <dimen name="padd_40">40dp</dimen>
+    <dimen name="padd_48">48dp</dimen>
+    <dimen name="padd_50">50dp</dimen>
+    <dimen name="padd_200">200dp</dimen>
+
 </resources>
