@@ -19,4 +19,6 @@
     <dimen name="padding_parent_filter">40dp</dimen>
     <dimen name="padding_filter">16dp</dimen>
     <dimen name="padd_16">16dp</dimen>
+    <dimen name="padd_200">200dp</dimen>
+    <dimen name="padd_10">10dp</dimen>
 </resources>

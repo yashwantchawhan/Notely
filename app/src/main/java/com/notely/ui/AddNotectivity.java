@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,7 @@ import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Note;
 import com.notely.utility.NoteType;
+import com.notely.utility.TextViewUndoRedo;
 import com.notely.viewmodel.NoteViewModel;
 
 import java.util.Date;
@@ -38,6 +41,8 @@ public class AddNotectivity extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout parentLinearLayout;
     String noteType = "";
+    TextViewUndoRedo helper;
+
 
 
     ;
@@ -51,13 +56,16 @@ public class AddNotectivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_notectivity);
-        ((NoteApplication) getApplication()).getAppComponent().inject(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(0);        ((NoteApplication) getApplication()).getAppComponent().inject(this);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
-
         parentLinearLayout = findViewById(R.id.parentLinearLayout);
         progressBar = findViewById(R.id.progressBar);
         etTitle = findViewById(R.id.etTitle);
         etGist = findViewById(R.id.etGist);
+        helper= new TextViewUndoRedo(etGist);
         rgNoteType = findViewById(R.id.rgNoteType);
         rgNoteType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -70,6 +78,24 @@ public class AddNotectivity extends AppCompatActivity {
                         noteType = NoteType.POEM.toString();
                         break;
                 }
+            }
+        });
+
+        etGist.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                mMenu.findItem(R.id.action_undo).setVisible(true);
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -97,8 +123,10 @@ public class AddNotectivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_undo:
+                helper.undo();
                 break;
             case R.id.action_add:
+                mMenu.findItem(R.id.action_undo).setVisible(false);
 
                 showLoading();
 
@@ -147,6 +175,12 @@ public class AddNotectivity extends AppCompatActivity {
 
     public void hideLoading() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 

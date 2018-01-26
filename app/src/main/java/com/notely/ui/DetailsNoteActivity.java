@@ -46,7 +46,6 @@ public class DetailsNoteActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         editTitle = findViewById(R.id.etTitle);
         editGist = findViewById(R.id.etGist);
-        // pass edittext object to TextViewUndoRedo class
          helper= new TextViewUndoRedo(editGist);
 
 

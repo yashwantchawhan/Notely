@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/llParent"
+
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.notely.ui.AddNotectivity">
+    android:fitsSystemWindows="true">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -13,61 +14,80 @@
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/parentLinearLayout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="@dimen/padd_16"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <EditText
-            android:id="@+id/etTitle"
+        <LinearLayout
+            android:id="@+id/parentLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title of the story" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etGist"
-            style="@style/Base.TextAppearance.AppCompat.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fafafa"
-            android:ems="10"
-            android:enabled="true"
-            android:focusable="true"
-            android:gravity="top"
-            android:hint="Type your quote here"
-            android:inputType="textMultiLine"
-            android:isScrollContainer="true"
-            android:maxLines="6"
-            android:minLines="6"
-            android:padding="24dp"
-            android:textIsSelectable="true" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/padd_10"
+                android:layout_height="wrap_content">
 
-        <RadioGroup
-            android:id="@+id/rgNoteType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/etTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="@string/title" />
 
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/padd_10"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etGist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="@string/gist"
+                    android:minHeight="@dimen/padd_200" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <RadioGroup
+                android:id="@+id/rgNoteType"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/padd_16"
                 android:layout_height="wrap_content"
-                android:text="Note Type" />
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rbStory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Story" />
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Note Type" />
 
-            <RadioButton
-                android:id="@+id/rbPoem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Poem" />
-        </RadioGroup>
-    </LinearLayout>
+                <RadioButton
+                    android:id="@+id/rbStory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Story" />
+
+                <RadioButton
+                    android:id="@+id/rbPoem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Poem" />
+            </RadioGroup>
+        </LinearLayout>
 
 
-</RelativeLayout>
+    </ScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

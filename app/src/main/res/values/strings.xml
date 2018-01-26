@@ -10,4 +10,6 @@
     <string name="poem">Poem</string>
     <string name="star">Star</string>
     <string name="heart">Heart</string>
+    <string name="title">Title</string>
+    <string name="gist">Gist</string>
 </resources>
