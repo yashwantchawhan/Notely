@@ -2,12 +2,12 @@
 <resources>
     <dimen name="text_size_title">16sp</dimen>
     <dimen name="text_size_gist">14sp</dimen>
-    <dimen name="text_size_date">10sp</dimen>
+    <dimen name="text_size_date">8sp</dimen>
     <dimen name="star_icon_size">40dp</dimen>
     <dimen name="list_height_size">88dp</dimen>
     <dimen name="list_margin_top">8dp</dimen>
     <dimen name="delete">40dp</dimen>
-    <dimen name="padd_10">10dp</dimen>
+    <dimen name="padd_14">14dp</dimen>
 
     <dimen name="toolbar_double_height">112dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
@@ -18,4 +18,5 @@
     <dimen name="padding_left_detail">40dp</dimen>
     <dimen name="padding_parent_filter">40dp</dimen>
     <dimen name="padding_filter">16dp</dimen>
+    <dimen name="padd_16">16dp</dimen>
 </resources>

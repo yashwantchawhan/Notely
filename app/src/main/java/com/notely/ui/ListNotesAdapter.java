@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.notely.R;
 import com.notely.model.Note;
 import com.notely.utility.ItemTouchHelperAdapter;
-import com.notely.utility.RecyclerItemTouchHelper;
 
 import java.util.List;
 
@@ -70,16 +69,10 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
         notifyDataSetChanged();
     }
 
-
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        return false;
-    }
-
     @Override
     public void onItemDismiss(int position) {
-        if(position!=RecyclerView.NO_POSITION){
-            adapterActionListener.onItemSwipe(noteArrayList.get(position),position);
+        if (position != RecyclerView.NO_POSITION) {
+            adapterActionListener.onItemSwipe(noteArrayList.get(position), position);
         }
     }
 
@@ -100,16 +93,15 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
             tvDate = itemView.findViewById(R.id.tvDate);
             ivStar = itemView.findViewById(R.id.ivStar);
             ivFavourite = itemView.findViewById(R.id.ivFavourite);
-            backGround=itemView.findViewById(R.id.background);
-            foreGround=itemView.findViewById(R.id.foreGround);
-
+            backGround = itemView.findViewById(R.id.background);
+            foreGround = itemView.findViewById(R.id.foreGround);
 
 
             foreGround.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                       adapterActionListener.onListItemClicked(noteArrayList.get(getAdapterPosition()));
+                        adapterActionListener.onListItemClicked(noteArrayList.get(getAdapterPosition()));
                     }
                 }
             });
@@ -136,7 +128,8 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
 
     public interface ListNotesAdapterActionListener {
         void onListItemClicked(Note note);
-        void onItemSwipe(Note note,int position);
+
+        void onItemSwipe(Note note, int position);
 
     }
 
