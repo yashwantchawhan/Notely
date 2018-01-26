@@ -1,5 +1,6 @@
 package com.notely.ui.list;
 
+import android.app.ActivityOptions;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.graphics.Color;
@@ -111,8 +112,12 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
 
                 break;
             case R.id.action_add:
-                Intent intent = new Intent(ListNotesActivity.this, AddNoteActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(this, AddNoteActivity.class);
+                startActivity(intent,
+                        ActivityOptions.makeCustomAnimation(this,
+                                R.anim.slide_in_right_medium,
+                                R.anim.slide_out_left_medium).toBundle()
+                );
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -136,8 +141,11 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     public void onListItemClicked(Note note) {
         Intent intent = new Intent(this, DetailsNoteActivity.class);
         intent.putExtra(NOTE_ITEM, note);
-        startActivity(intent);
-
+        startActivity(intent,
+                ActivityOptions.makeCustomAnimation(this,
+                        R.anim.slide_in_right_medium,
+                        R.anim.slide_out_left_medium).toBundle()
+        );
 
     }
 

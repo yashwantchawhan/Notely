@@ -92,6 +92,7 @@ public class DetailsNoteActivity extends BaseActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        finishWithTransition();
         return true;
     }
 

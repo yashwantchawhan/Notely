@@ -1,10 +1,7 @@
 package com.notely.ui.add;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,19 +15,14 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.notely.R;
-import com.notely.app.NoteApplication;
 import com.notely.model.Note;
 import com.notely.ui.BaseActivity;
 import com.notely.utility.NoteType;
 import com.notely.utility.TextViewUndoRedo;
-import com.notely.viewmodel.NoteViewModel;
 
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -45,7 +37,6 @@ public class AddNoteActivity extends BaseActivity {
     private LinearLayout parentLinearLayout;
     private String noteType = NoteType.STORY.toString();
     private TextViewUndoRedo helper;
-
 
 
     @Override
@@ -175,6 +166,7 @@ public class AddNoteActivity extends BaseActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        finishWithTransition();
         return true;
     }
 

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.viewmodel.NoteViewModel;
 
@@ -35,5 +36,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         compositeDisposable.dispose();
 
+    }
+
+    protected void finishWithTransition() {
+        overridePendingTransition(R.anim.slide_in_left_medium, R.anim.slide_out_right_medium);
     }
 }
