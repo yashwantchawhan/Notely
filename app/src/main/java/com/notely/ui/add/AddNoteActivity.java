@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Note;
+import com.notely.ui.BaseActivity;
 import com.notely.utility.NoteType;
 import com.notely.utility.TextViewUndoRedo;
 import com.notely.viewmodel.NoteViewModel;
@@ -33,7 +34,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class AddNoteActivity extends AppCompatActivity {
+public class AddNoteActivity extends BaseActivity {
 
     private static final long DELAY_IN_FINISH = 1000;
     private Menu mMenu;
@@ -44,10 +45,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private LinearLayout parentLinearLayout;
     private String noteType = "";
     private TextViewUndoRedo helper;
-    @Inject
-    ViewModelProvider.Factory mViewModelFactory;
-    private NoteViewModel mViewModel;
-    private final CompositeDisposable mDisposable = new CompositeDisposable();
+
 
 
     @Override
@@ -59,7 +57,6 @@ public class AddNoteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
         ((NoteApplication) getApplication()).getAppComponent().inject(this);
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         parentLinearLayout = findViewById(R.id.parentLinearLayout);
         progressBar = findViewById(R.id.progressBar);
         etTitle = findViewById(R.id.etTitle);
@@ -135,7 +132,7 @@ public class AddNoteActivity extends AppCompatActivity {
                             .isFavourite(false)
                             .build();
 
-                    mDisposable.add(mViewModel.insertNote(note)
+                    compositeDisposable.add(viewModel.insertNote(note)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnError(Timber::e)
@@ -165,7 +162,6 @@ public class AddNoteActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mDisposable.dispose();
     }
 
     public void showLoading() {

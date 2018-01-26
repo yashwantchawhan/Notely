@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".ui.add.AddNoteActivity" />
         <activity android:name=".ui.details.DetailsNoteActivity" />
-        <activity android:name=".ui.list.ListNotesActivity"></activity>
+        <activity android:name=".ui.list.ListNotesActivity" />
+        <activity android:name=".ui.BaseActivity"></activity>
     </application>
 
 </manifest>

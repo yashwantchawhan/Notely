@@ -25,6 +25,7 @@ import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Filter;
 import com.notely.model.Note;
+import com.notely.ui.BaseActivity;
 import com.notely.ui.add.AddNoteActivity;
 import com.notely.ui.details.DetailsNoteActivity;
 import com.notely.utility.DataManager;
@@ -42,7 +43,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class ListNotesActivity extends AppCompatActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
+public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
     public static final String NOTE_ITEM = "note_item";
     private static final String FILTER_QUERY = "SELECT * FROM Note WHERE ";
     private static final String SELECT_QUERY_ALL = "SELECT * FROM Note ORDER BY time_created DESC";
@@ -50,10 +51,6 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
     RecyclerView rvNotes;
     TextView tvNoRecord;
-    @Inject
-    ViewModelProvider.Factory mViewModelFactory;
-    private NoteViewModel mViewModel;
-    private final CompositeDisposable mDisposable = new CompositeDisposable();
     private List<Note> noteArrayList = new ArrayList<>();
     private ListNotesAdapter listNotesAdapter;
     private View coordinatorLayout;
@@ -80,7 +77,6 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         ItemTouchHelper.Callback callback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, listNotesAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rvNotes);
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
 
         // Create the observer which updates the UI.
         noteObserver = notes -> {
@@ -98,13 +94,12 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         };
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        mViewModel.getNotes().observe(this, noteObserver);
+        viewModel.getNotes().observe(this, noteObserver);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mDisposable.dispose();
     }
 
     @Override
@@ -119,7 +114,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         switch (item.getItemId()) {
             case R.id.action_filter:
                 if (isFilterApplied) {
-                    mViewModel.getNotes().observe(this, noteObserver);
+                    viewModel.getNotes().observe(this, noteObserver);
                     isFilterApplied = false;
                 }
                 View view = getLayoutInflater().inflate(R.layout.filter_list, null);
@@ -186,7 +181,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
                     }
                 }
             }
-            mViewModel.filteredNotes(queryBuilder.toString().isEmpty() ? SELECT_QUERY_ALL : FILTER_QUERY + queryBuilder.toString() + ORDER_BY).observe(ListNotesActivity.this, new Observer<List<Note>>() {
+            viewModel.filteredNotes(queryBuilder.toString().isEmpty() ? SELECT_QUERY_ALL : FILTER_QUERY + queryBuilder.toString() + ORDER_BY).observe(ListNotesActivity.this, new Observer<List<Note>>() {
                 @Override
                 public void onChanged(@Nullable List<Note> notes) {
                     Log.d("", "onChanged: " + notes.size());
@@ -221,7 +216,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     @Override
     public void onItemSwipe(Note note, int position) {
 
-        mDisposable.add(mViewModel.deleteNote(note.getId())
+        compositeDisposable.add(viewModel.deleteNote(note.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(Timber::e)
@@ -232,11 +227,11 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
         // showing snack bar with Undo option
         Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, note.getTitle() + getString(R.string.delete_message), Snackbar.LENGTH_LONG);
+                .make(coordinatorLayout, note.getTitle() + " " + getString(R.string.delete_message), Snackbar.LENGTH_LONG);
         snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDisposable.add(mViewModel.insertNote(note)
+                compositeDisposable.add(viewModel.insertNote(note)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError(Timber::e)
@@ -254,7 +249,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
     @Override
     public void onStarOrFavClicked(Note note, int position) {
-        mDisposable.add(mViewModel.updateNote(note)
+        compositeDisposable.add(viewModel.updateNote(note)
                 .subscribeOn(Schedulers.io())
                 .observeOn(
                         AndroidSchedulers.mainThread())

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Note;
+import com.notely.ui.BaseActivity;
 import com.notely.ui.list.ListNotesActivity;
 import com.notely.utility.Helper;
 import com.notely.utility.TextViewUndoRedo;
@@ -26,16 +27,12 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class DetailsNoteActivity extends AppCompatActivity {
+public class DetailsNoteActivity extends BaseActivity {
 
     private Menu mMenu;
     private EditText editTitle;
     private EditText editGist;
     private TextView tvDateUpdated;
-    @Inject
-    ViewModelProvider.Factory mViewModelFactory;
-    private NoteViewModel mViewModel;
-    private final CompositeDisposable mDisposable = new CompositeDisposable();
     private Note note;
     private TextViewUndoRedo helper;
 
@@ -49,7 +46,6 @@ public class DetailsNoteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         editTitle = findViewById(R.id.etTitle);
         editGist = findViewById(R.id.etGist);
         tvDateUpdated = findViewById(R.id.tvDateUpdated);
@@ -82,7 +78,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(editTitle.getText()) && !TextUtils.isEmpty(editGist.getText())) {
                     note.setTitle(editTitle.getText().toString());
                     note.setGist(editGist.getText().toString());
-                    mDisposable.add(mViewModel.insertNote(note)
+                    compositeDisposable.add(viewModel.insertNote(note)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .doOnError(Timber::e)
@@ -113,7 +109,6 @@ public class DetailsNoteActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         note = null;
-        mDisposable.dispose();
     }
 
     void setFocusable(boolean focusable) {
