@@ -40,6 +40,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(0);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         editTitle = findViewById(R.id.etTitle);
         editGist = findViewById(R.id.etGist);
@@ -68,6 +69,8 @@ public class DetailsNoteActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_undo:
+
+
                 break;
             case R.id.action_save:
                 note.setTitle(editTitle.getText().toString());

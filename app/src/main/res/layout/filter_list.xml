@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/filter_background_color"
+    android:paddingBottom="@dimen/padding_parent_filter"
+    android:paddingTop="@dimen/padding_parent_filter">
+
+    <TextView
+        android:id="@+id/tvFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/filter"
+        android:textColor="@android:color/white" />
+
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/rvFilterList"
+       android:layout_width="match_parent"
+       android:layout_below="@+id/tvFilter"
+       android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvFilterList"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/apply_button_shape"
+        android:text="@string/apply"
+        android:textColor="@android:color/white" />
+
+
+</RelativeLayout>

@@ -6,9 +6,9 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,10 +18,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.notely.R;
 import com.notely.app.NoteApplication;
+import com.notely.model.Filter;
 import com.notely.model.Note;
+import com.notely.utility.DataManager;
+import com.notely.utility.NoteType;
 import com.notely.utility.RecyclerItemTouchHelper;
 import com.notely.viewmodel.NoteViewModel;
 
@@ -37,7 +42,11 @@ import timber.log.Timber;
 
 public class ListNotesActivity extends AppCompatActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
     public static final String NOTE_ITEM = "note_item";
+    private static final String SELECT_QUERY = "SELECT * FROM Note WHERE ";
+    private static final String SELECT_QUERY_ALL = "SELECT * FROM Note";
+
     RecyclerView rvNotes;
+    TextView tvNoRecord;
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
     private NoteViewModel mViewModel;
@@ -46,6 +55,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     private ListNotesAdapter listNotesAdapter;
     private View coordinatorLayout;
     private ItemTouchHelper mItemTouchHelper;
+    private AlertDialog alertDialog;
 
 
     @Override
@@ -53,6 +63,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_notes);
         rvNotes = findViewById(R.id.rvNotes);
+        tvNoRecord = findViewById(R.id.tvNoRecord);
         coordinatorLayout = findViewById(R.id.coordinateLayout);
         ((NoteApplication) getApplication()).getAppComponent().inject(this);
         listNotesAdapter = new ListNotesAdapter(noteArrayList);
@@ -71,6 +82,12 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
                 if (notes != null && notes.size() > 0) {
                     Log.d("ListNoteActivity", "onChanged: " + notes.size());
                     listNotesAdapter.addItems(notes);
+                    tvNoRecord.setVisibility(View.GONE);
+                    rvNotes.setVisibility(View.VISIBLE);
+
+                } else {
+                    tvNoRecord.setVisibility(View.VISIBLE);
+                    rvNotes.setVisibility(View.GONE);
                 }
             }
         });
@@ -96,6 +113,14 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         switch (item.getItemId()) {
 
             case R.id.action_filter:
+                View view = getLayoutInflater().inflate(R.layout.filter_list, null);
+                findviews(view);
+
+               alertDialog= new AlertDialog.Builder(this)
+                        .setView(view)
+                        .show();
+
+
                 break;
             case R.id.action_add:
                 Intent intent = new Intent(ListNotesActivity.this, AddNotectivity.class);
@@ -106,10 +131,81 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
     }
 
+    private void findviews(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.rvFilterList);
+        Button buttonApply = view.findViewById(R.id.apply);
+        FilterAdapter filterAdapter = new FilterAdapter(DataManager.getInstance().getFilters());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(filterAdapter);
+
+        buttonApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringBuilder queryBuilder = new StringBuilder();
+                for (Filter filter : filterAdapter.getFilterList()) {
+                    if (filter.isChecked()) {
+                        switch (filter.getFilterType()) {
+                            case Poem:
+                                queryBuilder.append("type='" + NoteType.POEM.toString()+"'");
+                                break;
+                            case Star:
+                                if (queryBuilder.toString().isEmpty()) {
+                                    queryBuilder.append("star='" + 1 + "'");
+                                } else {
+                                    queryBuilder.append("AND star='" + 1 + "'");
+                                }
+                                break;
+                            case Favourite:
+                                if (queryBuilder.toString().isEmpty()) {
+                                    queryBuilder.append("favourite='" + 1 + "'");
+                                } else {
+                                    queryBuilder.append("AND favourite='" + 1 + "'");
+                                }
+                                break;
+                            case Story:
+                                if (queryBuilder.toString().isEmpty()) {
+                                    queryBuilder.append("type='" + NoteType.STORY.toString()+"'");
+                                } else {
+                                    if(queryBuilder.toString().contains(NoteType.POEM.toString())){
+                                        queryBuilder.append(" OR type='" + NoteType.STORY.toString()+"'");
+
+                                    }else {
+                                        queryBuilder.append(" AND type='" + NoteType.STORY.toString()+"'");
+
+                                    }
+                                }
+                                break;
+
+                        }
+                    }
+                }
+                mViewModel.filteredNotes(queryBuilder.toString().isEmpty()?SELECT_QUERY_ALL:SELECT_QUERY+queryBuilder.toString()).observe(ListNotesActivity.this, new Observer<List<Note>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Note> notes) {
+                        Log.d("", "onChanged: " + notes.size());
+                        if (notes != null && notes.size() > 0) {
+                            alertDialog.dismiss();
+                            Log.d("ListNoteActivity", "onChanged: " + notes.size());
+                            listNotesAdapter.filterList(notes);
+                            tvNoRecord.setVisibility(View.GONE);
+                            rvNotes.setVisibility(View.VISIBLE);
+
+                        } else {
+                            tvNoRecord.setVisibility(View.VISIBLE);
+                            rvNotes.setVisibility(View.GONE);
+                        }
+
+                    }
+                });
+
+            }
+        });
+    }
+
     @Override
     public void onListItemClicked(Note note) {
-        Intent intent=new Intent(this,DetailsNoteActivity.class);
-        intent.putExtra(NOTE_ITEM,note);
+        Intent intent = new Intent(this, DetailsNoteActivity.class);
+        intent.putExtra(NOTE_ITEM, note);
         startActivity(intent);
 
 
@@ -148,4 +244,5 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
+
 }

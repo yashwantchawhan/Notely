@@ -11,8 +11,12 @@
     <style name="editTextStyle">
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:focusable">false</item>
-        <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="filter_text_style">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 
 </resources>

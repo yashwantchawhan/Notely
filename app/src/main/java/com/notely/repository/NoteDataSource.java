@@ -42,4 +42,9 @@ public class NoteDataSource implements NoteRepository {
     public int delete(int id) {
         return noteDao.delete(id);
     }
+
+    @Override
+    public LiveData<List<Note>> filteredNotes(String query) {
+        return noteDao.filteredNotes(query);
+    }
 }

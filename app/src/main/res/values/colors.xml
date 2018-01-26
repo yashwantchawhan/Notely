@@ -10,6 +10,9 @@
     <color name="note_gist">#9a9a9a</color>
     <color name="note_date">#d5d5d5</color>
     <color name="delete_view_background">#e02a42</color>
+    <color name="filter_background_color">#4d4d4d</color>
+    <color name="filter_check">#58e2c2</color>
+    <color name="white">#ffffff</color>
 
 
 </resources>

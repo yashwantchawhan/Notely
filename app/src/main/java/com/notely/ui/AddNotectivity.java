@@ -107,8 +107,8 @@ public class AddNotectivity extends AppCompatActivity {
                         .setGist(etGist.getText().toString())
                         .setType(noteType)
                         .setTimeCreated(new Date().getTime())
-                        .isStar(false)
-                        .isFavourite(false)
+                        .isStar(true)
+                        .isFavourite(true)
                         .build();
 
                 mDisposable.add(mViewModel.insertNote(note)

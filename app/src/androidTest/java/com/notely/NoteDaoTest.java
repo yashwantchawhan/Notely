@@ -8,9 +8,11 @@ import android.support.test.runner.AndroidJUnit4;
 import com.notely.db.AppDatabase;
 import com.notely.model.Note;
 import com.notely.db.NoteDao;
+import com.notely.utility.NoteType;
 
 import org.hamcrest.Matchers;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static com.notely.LiveDataTestUtil.getValue;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -31,7 +34,11 @@ public class NoteDaoTest {
     private AppDatabase mDb;
     Context context;
 
-    private static final Note NOTE = new Note("type", "title", "description", true, false);
+    private static final Note NOTE = new Note(NoteType.POEM.toString(), "title", "description", true, false);
+    private static final Note NOTE1 = new Note(NoteType.POEM.toString(), "title", "description", false, false);
+    private static final Note NOTE2 = new Note(NoteType.STORY.toString(), "title", "description", false, false);
+
+
 
     @Before
     public void createDb() {
@@ -51,7 +58,7 @@ public class NoteDaoTest {
         // Given that we have a user in the data source
         mNoteDao.insert(NOTE);
         //when get inserted user from data source
-        List<Note> list = LiveDataTestUtil.getValue(mNoteDao.getNotes());
+        List<Note> list = getValue(mNoteDao.getNotes());
         //then
         assertThat(list.get(0).getTitle(), Matchers.equalTo(NOTE.getTitle()));
 
@@ -61,7 +68,7 @@ public class NoteDaoTest {
     public void loadByIdTest() throws InterruptedException {
         // Given that we have a user in the data source
         mNoteDao.insert(NOTE);
-        Note note = LiveDataTestUtil.getValue(mNoteDao.loadById(1));
+        Note note = getValue(mNoteDao.loadById(1));
         assertThat(note.getTitle(), Matchers.equalTo(NOTE.getTitle()));
     }
 
@@ -70,8 +77,20 @@ public class NoteDaoTest {
         // Given that we have a user in the data source
         mNoteDao.insert(NOTE);
         mNoteDao.delete(1);
-        Note note = LiveDataTestUtil.getValue(mNoteDao.loadById(1));
+        Note note = getValue(mNoteDao.loadById(1));
         assertNull(note);
 
+    }
+    @Test
+    public void filteredNotes() throws InterruptedException {
+
+        mNoteDao.insert(NOTE);
+        mNoteDao.insert(NOTE1);
+        mNoteDao.insert(NOTE2);
+
+
+        List<Note> list= getValue(mNoteDao.filteredNotes("SELECT * FROM Note WHERE star="+"'1'"));
+
+        Assert.assertEquals(1,list.size());
     }
 }

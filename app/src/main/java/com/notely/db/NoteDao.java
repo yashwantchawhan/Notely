@@ -6,6 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RawQuery;
 
 import com.notely.model.Note;
 
@@ -19,6 +20,9 @@ import java.util.List;
 public interface NoteDao {
     @Query("SELECT * FROM Note")
     LiveData<List<Note>> getNotes();
+
+    @RawQuery(observedEntities = Note.class)
+    LiveData<List<Note>> filteredNotes(String query);
 
     @Query("SELECT * FROM Note WHERE id= :id")
     LiveData<Note> loadById(int id);

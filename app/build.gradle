@@ -45,8 +45,8 @@ dependencies {
     // Java8 support for Lifecycles
     implementation 'android.arch.lifecycle:common-java8:1.0.0'
     // Room
-    implementation 'android.arch.persistence.room:runtime:1.0.0'
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    implementation 'android.arch.persistence.room:runtime:1.1.0-alpha1'
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.0-alpha1"
     // RxJava support for Room
     implementation 'android.arch.persistence.room:rxjava2:1.0.0'
     // Paging

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llFilterItemParent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/padding_filter"
+    android:paddingBottom="@dimen/padding_filter"
+    android:background="@color/filter_background_color"
+    android:paddingLeft="@dimen/padding_filter"
+    android:paddingRight="@dimen/padding_filter">
+
+    <TextView
+        android:id="@+id/tvFilterTitle"
+        style="@style/filter_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/story" />
+
+
+    <ImageView
+        android:id="@+id/ivFilterCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_uncheck" />
+
+
+</LinearLayout>
+
+
+
+

@@ -3,34 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/padding_left"
-    android:paddingRight="@dimen/padding_left"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <EditText
-            android:id="@+id/etTitle"
+        <LinearLayout
             android:layout_width="match_parent"
-            style="@style/editTextStyle"
             android:layout_height="wrap_content"
-            android:text="Title"
-             />
+            android:orientation="vertical"
+
+            >
+
+            <EditText
+                android:id="@+id/etTitle"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:paddingLeft="@dimen/padding_left_detail"
+                android:paddingRight="@dimen/padding_right"
+                android:text="Title"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textStyle="bold|italic|normal" />
+
+            <TextView
+                android:id="@+id/tvDateUpdated"
+                android:layout_width="match_parent"
+                android:text="12 may 2018"
+                android:paddingTop="10dp"
+                android:background="@color/colorPrimary"
+                android:paddingBottom="16dp"
+                android:paddingLeft="@dimen/padding_left_detail"
+                android:paddingRight="@dimen/padding_right"
+                android:layout_height="wrap_content" />
 
 
-        <EditText
-            android:id="@+id/etGist"
-            android:layout_width="match_parent"
-            style="@style/editTextStyle"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:text="Story"
-            />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etGist"
+                style="@style/editTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/transparent"
+                android:paddingLeft="@dimen/padding_left_detail"
+                android:paddingRight="@dimen/padding_right"
+                android:text="Story" />
+        </LinearLayout>
+    </ScrollView>
 
 
 </android.support.design.widget.CoordinatorLayout>

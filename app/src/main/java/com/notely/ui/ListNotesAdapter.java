@@ -64,6 +64,12 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
         notifyDataSetChanged();
     }
 
+    public void filterList(List<Note> notes) {
+        noteArrayList.clear();
+        this.noteArrayList.addAll(notes);
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
