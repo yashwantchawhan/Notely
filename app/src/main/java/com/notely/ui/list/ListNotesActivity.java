@@ -266,4 +266,9 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
                 }));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataManager.getInstance().clearFilter();
+    }
 }
