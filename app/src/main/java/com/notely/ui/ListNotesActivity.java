@@ -42,7 +42,7 @@ import timber.log.Timber;
 
 public class ListNotesActivity extends AppCompatActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
     public static final String NOTE_ITEM = "note_item";
-    private static final String SELECT_QUERY = "SELECT * FROM Note WHERE ";
+    private static final String FILTER_QUERY = "SELECT * FROM Note WHERE ";
     private static final String SELECT_QUERY_ALL = "SELECT * FROM Note";
 
     RecyclerView rvNotes;
@@ -56,12 +56,17 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
     private View coordinatorLayout;
     private ItemTouchHelper mItemTouchHelper;
     private AlertDialog alertDialog;
+    private boolean isFilterApplied=false;
+    Observer<List<Note>> noteObserver;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_notes);
+
+
         rvNotes = findViewById(R.id.rvNotes);
         tvNoRecord = findViewById(R.id.tvNoRecord);
         coordinatorLayout = findViewById(R.id.coordinateLayout);
@@ -76,9 +81,12 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         mItemTouchHelper.attachToRecyclerView(rvNotes);
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
 
-        mViewModel.getNotes().observe(this, new Observer<List<Note>>() {
+
+        // Create the observer which updates the UI.
+        noteObserver = new Observer<List<Note>>() {
             @Override
             public void onChanged(@Nullable List<Note> notes) {
+                // Update the UI, in this case, a TextView.
                 if (notes != null && notes.size() > 0) {
                     Log.d("ListNoteActivity", "onChanged: " + notes.size());
                     listNotesAdapter.addItems(notes);
@@ -90,8 +98,10 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
                     rvNotes.setVisibility(View.GONE);
                 }
             }
-        });
+        };
 
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        mViewModel.getNotes().observe(this, noteObserver);
     }
 
     @Override
@@ -113,6 +123,10 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         switch (item.getItemId()) {
 
             case R.id.action_filter:
+                if(isFilterApplied){
+                    mViewModel.getNotes().observe(this,noteObserver);
+                    isFilterApplied=false;
+                }
                 View view = getLayoutInflater().inflate(R.layout.filter_list, null);
                 findviews(view);
 
@@ -138,67 +152,65 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(filterAdapter);
 
-        buttonApply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StringBuilder queryBuilder = new StringBuilder();
-                for (Filter filter : filterAdapter.getFilterList()) {
-                    if (filter.isChecked()) {
-                        switch (filter.getFilterType()) {
-                            case Poem:
-                                queryBuilder.append("type='" + NoteType.POEM.toString()+"'");
-                                break;
-                            case Star:
-                                if (queryBuilder.toString().isEmpty()) {
-                                    queryBuilder.append("star='" + 1 + "'");
-                                } else {
-                                    queryBuilder.append("AND star='" + 1 + "'");
-                                }
-                                break;
-                            case Favourite:
-                                if (queryBuilder.toString().isEmpty()) {
-                                    queryBuilder.append("favourite='" + 1 + "'");
-                                } else {
-                                    queryBuilder.append("AND favourite='" + 1 + "'");
-                                }
-                                break;
-                            case Story:
-                                if (queryBuilder.toString().isEmpty()) {
-                                    queryBuilder.append("type='" + NoteType.STORY.toString()+"'");
-                                } else {
-                                    if(queryBuilder.toString().contains(NoteType.POEM.toString())){
-                                        queryBuilder.append(" OR type='" + NoteType.STORY.toString()+"'");
+        buttonApply.setOnClickListener(v -> {
+            StringBuilder queryBuilder = new StringBuilder();
+            for (Filter filter : filterAdapter.getFilterList()) {
+                if (filter.isChecked()) {
+                    switch (filter.getFilterType()) {
+                        case Poem:
+                            queryBuilder.append("type='" + NoteType.POEM.toString()+"'");
+                            break;
+                        case Star:
+                            if (queryBuilder.toString().isEmpty()) {
+                                queryBuilder.append("star='" + 1 + "'");
+                            } else {
+                                queryBuilder.append("AND star='" + 1 + "'");
+                            }
+                            break;
+                        case Favourite:
+                            if (queryBuilder.toString().isEmpty()) {
+                                queryBuilder.append("favourite='" + 1 + "'");
+                            } else {
+                                queryBuilder.append("AND favourite='" + 1 + "'");
+                            }
+                            break;
+                        case Story:
+                            if (queryBuilder.toString().isEmpty()) {
+                                queryBuilder.append("type='" + NoteType.STORY.toString()+"'");
+                            } else {
+                                if(queryBuilder.toString().contains(NoteType.POEM.toString())){
+                                    queryBuilder.append(" OR type='" + NoteType.STORY.toString()+"'");
 
-                                    }else {
-                                        queryBuilder.append(" AND type='" + NoteType.STORY.toString()+"'");
+                                }else {
+                                    queryBuilder.append(" AND type='" + NoteType.STORY.toString()+"'");
 
-                                    }
                                 }
-                                break;
+                            }
+                            break;
 
-                        }
                     }
                 }
-                mViewModel.filteredNotes(queryBuilder.toString().isEmpty()?SELECT_QUERY_ALL:SELECT_QUERY+queryBuilder.toString()).observe(ListNotesActivity.this, new Observer<List<Note>>() {
-                    @Override
-                    public void onChanged(@Nullable List<Note> notes) {
-                        Log.d("", "onChanged: " + notes.size());
-                        if (notes != null && notes.size() > 0) {
-                            alertDialog.dismiss();
-                            Log.d("ListNoteActivity", "onChanged: " + notes.size());
-                            listNotesAdapter.filterList(notes);
-                            tvNoRecord.setVisibility(View.GONE);
-                            rvNotes.setVisibility(View.VISIBLE);
-
-                        } else {
-                            tvNoRecord.setVisibility(View.VISIBLE);
-                            rvNotes.setVisibility(View.GONE);
-                        }
-
-                    }
-                });
-
             }
+            mViewModel.filteredNotes(queryBuilder.toString().isEmpty()?SELECT_QUERY_ALL: FILTER_QUERY +queryBuilder.toString()).observe(ListNotesActivity.this, new Observer<List<Note>>() {
+                @Override
+                public void onChanged(@Nullable List<Note> notes) {
+                    Log.d("", "onChanged: " + notes.size());
+                    if (notes != null && notes.size() > 0) {
+                        alertDialog.dismiss();
+                        isFilterApplied=true;
+                        Log.d("ListNoteActivity", "onChanged: " + notes.size());
+                        listNotesAdapter.filterList(notes);
+                        tvNoRecord.setVisibility(View.GONE);
+                        rvNotes.setVisibility(View.VISIBLE);
+
+                    } else {
+                        tvNoRecord.setVisibility(View.VISIBLE);
+                        rvNotes.setVisibility(View.GONE);
+                    }
+
+                }
+            });
+
         });
     }
 

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.notely.R;
 import com.notely.app.NoteApplication;
 import com.notely.model.Note;
+import com.notely.utility.TextViewUndoRedo;
 import com.notely.viewmodel.NoteViewModel;
 
 import javax.inject.Inject;
@@ -30,6 +31,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
     private NoteViewModel mViewModel;
     private final CompositeDisposable mDisposable = new CompositeDisposable();
     private Note note;
+    TextViewUndoRedo helper;
 
 
     @Override
@@ -44,6 +46,9 @@ public class DetailsNoteActivity extends AppCompatActivity {
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
         editTitle = findViewById(R.id.etTitle);
         editGist = findViewById(R.id.etGist);
+        // pass edittext object to TextViewUndoRedo class
+         helper= new TextViewUndoRedo(editGist);
+
 
         if (getIntent() != null) {
             note = getIntent().getParcelableExtra(ListNotesActivity.NOTE_ITEM);
@@ -69,8 +74,7 @@ public class DetailsNoteActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.action_undo:
-
-
+                helper.undo(); // perform undo
                 break;
             case R.id.action_save:
                 note.setTitle(editTitle.getText().toString());
