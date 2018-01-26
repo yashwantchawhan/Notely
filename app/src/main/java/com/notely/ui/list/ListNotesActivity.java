@@ -1,15 +1,11 @@
 package com.notely.ui.list;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,24 +18,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.notely.R;
-import com.notely.app.NoteApplication;
-import com.notely.model.Filter;
 import com.notely.model.Note;
 import com.notely.ui.BaseActivity;
 import com.notely.ui.add.AddNoteActivity;
 import com.notely.ui.details.DetailsNoteActivity;
 import com.notely.utility.DataManager;
-import com.notely.utility.NoteType;
 import com.notely.utility.RecyclerItemTouchHelper;
-import com.notely.viewmodel.NoteViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -51,7 +40,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     private List<Note> noteArrayList = new ArrayList<>();
     private ListNotesAdapter listNotesAdapter;
     private View coordinatorLayout;
-    private ItemTouchHelper mItemTouchHelper;
+    private ItemTouchHelper itemTouchHelper;
     private AlertDialog alertDialog;
     private boolean isFilterApplied = false;
     private Observer<List<Note>> noteObserver;
@@ -71,8 +60,8 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
         listNotesAdapter.setAdapterActionListener(this);
         rvNotes.setAdapter(listNotesAdapter);
         ItemTouchHelper.Callback callback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, listNotesAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(rvNotes);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(rvNotes);
 
         // Create the observer which updates the UI.
         noteObserver = notes -> {

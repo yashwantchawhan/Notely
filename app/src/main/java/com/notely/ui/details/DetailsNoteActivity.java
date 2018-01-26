@@ -1,9 +1,6 @@
 package com.notely.ui.details;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,24 +9,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.notely.R;
-import com.notely.app.NoteApplication;
 import com.notely.model.Note;
 import com.notely.ui.BaseActivity;
 import com.notely.ui.list.ListNotesActivity;
 import com.notely.utility.Helper;
 import com.notely.utility.TextViewUndoRedo;
-import com.notely.viewmodel.NoteViewModel;
-
-import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class DetailsNoteActivity extends BaseActivity {
 
-    private Menu mMenu;
+    private Menu menu;
     private EditText editTitle;
     private EditText editGist;
     private TextView tvDateUpdated;
@@ -60,7 +52,7 @@ public class DetailsNoteActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.mMenu = menu;
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.details_screen_menu, menu);
         return super.onCreateOptionsMenu(menu);
 
@@ -116,17 +108,17 @@ public class DetailsNoteActivity extends BaseActivity {
             editTitle.setFocusableInTouchMode(true);
             editGist.setFocusable(true);
             editGist.setFocusableInTouchMode(true);
-            mMenu.findItem(R.id.action_undo).setVisible(true);
-            mMenu.findItem(R.id.action_save).setVisible(true);
-            mMenu.findItem(R.id.action_edit).setVisible(false);
+            menu.findItem(R.id.action_undo).setVisible(true);
+            menu.findItem(R.id.action_save).setVisible(true);
+            menu.findItem(R.id.action_edit).setVisible(false);
         } else {
             editTitle.setFocusable(false);
             editTitle.setFocusableInTouchMode(false);
             editGist.setFocusable(false);
             editGist.setFocusableInTouchMode(false);
-            mMenu.findItem(R.id.action_undo).setVisible(false);
-            mMenu.findItem(R.id.action_save).setVisible(false);
-            mMenu.findItem(R.id.action_edit).setVisible(true);
+            menu.findItem(R.id.action_undo).setVisible(false);
+            menu.findItem(R.id.action_save).setVisible(false);
+            menu.findItem(R.id.action_edit).setVisible(true);
         }
     }
 }
