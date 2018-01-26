@@ -11,7 +11,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.functions.Action;
 
 /**
  * Created by yashwant on 21/01/18.
@@ -29,7 +28,8 @@ public class NoteViewModel extends ViewModel {
     public LiveData<List<Note>> getNotes() {
         return repository.getNotes();
     }
-    public LiveData<List<Note>> filteredNotes(String query){
+
+    public LiveData<List<Note>> filteredNotes(String query) {
         return repository.filteredNotes(query);
     }
 
@@ -40,4 +40,9 @@ public class NoteViewModel extends ViewModel {
     public Completable deleteNote(final int id) {
         return Completable.fromAction(() -> repository.delete(id));
     }
+
+    public Completable updateNote(Note note) {
+        return Completable.fromAction(() -> repository.updateNote(note));
+    }
+
 }

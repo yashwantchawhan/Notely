@@ -43,7 +43,8 @@ import timber.log.Timber;
 public class ListNotesActivity extends AppCompatActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
     public static final String NOTE_ITEM = "note_item";
     private static final String FILTER_QUERY = "SELECT * FROM Note WHERE ";
-    private static final String SELECT_QUERY_ALL = "SELECT * FROM Note";
+    private static final String SELECT_QUERY_ALL = "SELECT * FROM Note ORDER BY time_created DESC";
+    private static final String ORDER_BY = "ORDER BY time_created DESC";
 
     RecyclerView rvNotes;
     TextView tvNoRecord;
@@ -188,10 +189,13 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
                             }
                             break;
 
+
+
+
                     }
                 }
             }
-            mViewModel.filteredNotes(queryBuilder.toString().isEmpty()?SELECT_QUERY_ALL: FILTER_QUERY +queryBuilder.toString()).observe(ListNotesActivity.this, new Observer<List<Note>>() {
+            mViewModel.filteredNotes(queryBuilder.toString().isEmpty()?SELECT_QUERY_ALL: FILTER_QUERY +queryBuilder.toString()+ORDER_BY).observe(ListNotesActivity.this, new Observer<List<Note>>() {
                 @Override
                 public void onChanged(@Nullable List<Note> notes) {
                     Log.d("", "onChanged: " + notes.size());
@@ -255,6 +259,17 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         });
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
+    }
+
+    @Override
+    public void onStarOrFavClicked(Note note,int position) {
+        mDisposable.add(mViewModel.updateNote(note)
+                .subscribeOn(Schedulers.io())
+                .observeOn(
+                        AndroidSchedulers.mainThread())
+                .doOnError(Timber::e)
+                .subscribe(() -> {
+                }));
     }
 
 }

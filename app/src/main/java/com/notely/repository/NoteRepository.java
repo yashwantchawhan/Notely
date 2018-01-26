@@ -23,5 +23,7 @@ public interface NoteRepository {
     int delete(int id);
 
     LiveData<List<Note>> filteredNotes(String query);
+
+    void updateNote(Note note);
 }
 

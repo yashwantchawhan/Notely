@@ -47,4 +47,9 @@ public class NoteDataSource implements NoteRepository {
     public LiveData<List<Note>> filteredNotes(String query) {
         return noteDao.filteredNotes(query);
     }
+
+    @Override
+    public void updateNote(Note note) {
+         noteDao.updateNote(note);
+    }
 }

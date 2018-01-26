@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.notely.R;
 import com.notely.model.Note;
+import com.notely.utility.Helper;
 import com.notely.utility.ItemTouchHelperAdapter;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
         final Note note = noteArrayList.get(position);
         holder.tvTitle.setText("" + note.getTitle());
         holder.tvGist.setText("" + note.getGist());
-        holder.tvDate.setText("" + note.getTime_created());
+        holder.tvDate.setText("" + Helper.getDate(holder.tvDate.getContext(), note.getTime_created()));
 
         if (note.isStar()) {
             holder.ivStar.setImageDrawable(holder.ivStar.getContext().getDrawable(R.drawable.ic_star));
@@ -97,30 +98,35 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
             foreGround = itemView.findViewById(R.id.foreGround);
 
 
-            foreGround.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        adapterActionListener.onListItemClicked(noteArrayList.get(getAdapterPosition()));
-                    }
+            foreGround.setOnClickListener(v -> {
+                if (getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    adapterActionListener.onListItemClicked(noteArrayList.get(getAdapterPosition()));
                 }
             });
 
-            ivStar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-
+            ivStar.setOnClickListener(v -> {
+                if (getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    if (noteArrayList.get(getAdapterPosition()).isStar()) {
+                        noteArrayList.get(getAdapterPosition()).setStar(false);
+                    } else {
+                        noteArrayList.get(getAdapterPosition()).setStar(true);
                     }
+                    notifyItemChanged(getAdapterPosition());
+                    adapterActionListener.onStarOrFavClicked(noteArrayList.get(getAdapterPosition()),getAdapterPosition());
+
                 }
             });
 
-            ivFavourite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-
+            ivFavourite.setOnClickListener(v -> {
+                if (getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    if (noteArrayList.get(getAdapterPosition()).isFavourite()) {
+                        noteArrayList.get(getAdapterPosition()).setFavourite(false);
+                    } else {
+                        noteArrayList.get(getAdapterPosition()).setFavourite(true);
                     }
+                    notifyItemChanged(getAdapterPosition());
+                    adapterActionListener.onStarOrFavClicked(noteArrayList.get(getAdapterPosition()),getAdapterPosition());
+
                 }
             });
         }
@@ -130,6 +136,8 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
         void onListItemClicked(Note note);
 
         void onItemSwipe(Note note, int position);
+
+        void onStarOrFavClicked(Note note,int position);
 
     }
 

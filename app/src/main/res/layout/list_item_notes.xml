@@ -54,6 +54,7 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="title"
+                android:textStyle="normal|bold"
                 android:textAppearance="?android:title"
                 android:textColor="@color/note_title"
                 android:textSize="@dimen/text_size_title" />
@@ -81,10 +82,10 @@
                 android:textSize="@dimen/text_size_date" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/llSecondChild"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/star_icon_size"
             android:layout_alignParentRight="true"
             android:orientation="horizontal">
 
@@ -101,10 +102,11 @@
                 android:id="@+id/ivFavourite"
                 android:layout_width="@dimen/star_icon_size"
                 android:layout_height="@dimen/star_icon_size"
+                android:layout_toRightOf="@+id/ivStar"
                 android:contentDescription="@string/star_favourite"
                 android:paddingLeft="2dp"
                 android:src="@drawable/ic_favorite" />
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </RelativeLayout>

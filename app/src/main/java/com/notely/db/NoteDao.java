@@ -2,11 +2,11 @@ package com.notely.db;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.RawQuery;
+import android.arch.persistence.room.Update;
 
 import com.notely.model.Note;
 
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Dao
 public interface NoteDao {
-    @Query("SELECT * FROM Note")
+    @Query("SELECT * FROM Note ORDER BY time_created DESC")
     LiveData<List<Note>> getNotes();
 
     @RawQuery(observedEntities = Note.class)
@@ -30,6 +30,9 @@ public interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Note note);
 
-    @Query("DELETE FROM Note WHERE id= :id" )
+    @Query("DELETE FROM Note WHERE id= :id")
     int delete(int id);
+
+    @Update
+    void updateNote(Note note);
 }
