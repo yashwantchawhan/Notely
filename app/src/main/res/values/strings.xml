@@ -12,4 +12,5 @@
     <string name="heart">Heart</string>
     <string name="title">Title</string>
     <string name="gist">Gist</string>
+    <string name="last_updated">Last Updated:</string>
 </resources>
