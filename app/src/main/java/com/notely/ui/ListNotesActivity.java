@@ -67,6 +67,7 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_notes);
 
+        getSupportActionBar().setElevation(0);
 
         rvNotes = findViewById(R.id.rvNotes);
         tvNoRecord = findViewById(R.id.tvNoRecord);
@@ -84,20 +85,17 @@ public class ListNotesActivity extends AppCompatActivity implements ListNotesAda
 
 
         // Create the observer which updates the UI.
-        noteObserver = new Observer<List<Note>>() {
-            @Override
-            public void onChanged(@Nullable List<Note> notes) {
-                // Update the UI, in this case, a TextView.
-                if (notes != null && notes.size() > 0) {
-                    Log.d("ListNoteActivity", "onChanged: " + notes.size());
-                    listNotesAdapter.addItems(notes);
-                    tvNoRecord.setVisibility(View.GONE);
-                    rvNotes.setVisibility(View.VISIBLE);
+        noteObserver = notes -> {
+            // Update the UI, in this case, a TextView.
+            if (notes != null && notes.size() > 0) {
+                Log.d("ListNoteActivity", "onChanged: " + notes.size());
+                listNotesAdapter.addItems(notes);
+                tvNoRecord.setVisibility(View.GONE);
+                rvNotes.setVisibility(View.VISIBLE);
 
-                } else {
-                    tvNoRecord.setVisibility(View.VISIBLE);
-                    rvNotes.setVisibility(View.GONE);
-                }
+            } else {
+                tvNoRecord.setVisibility(View.VISIBLE);
+                rvNotes.setVisibility(View.GONE);
             }
         };
 
