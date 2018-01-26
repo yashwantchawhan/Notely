@@ -46,7 +46,6 @@ import timber.log.Timber;
 public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.ListNotesAdapterActionListener {
     public static final String NOTE_ITEM = "note_item";
 
-
     RecyclerView rvNotes;
     TextView tvNoRecord;
     private List<Note> noteArrayList = new ArrayList<>();
@@ -62,7 +61,6 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_notes);
-        ((NoteApplication) getApplication()).getAppComponent().inject(this);
         getSupportActionBar().setElevation(0);
         rvNotes = findViewById(R.id.rvNotes);
         tvNoRecord = findViewById(R.id.tvNoRecord);

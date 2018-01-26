@@ -40,7 +40,6 @@ public class DetailsNoteActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((NoteApplication) getApplication()).getAppComponent().inject(this);
         setContentView(R.layout.activity_details_note);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

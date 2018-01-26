@@ -56,7 +56,6 @@ public class AddNoteActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setElevation(0);
-        ((NoteApplication) getApplication()).getAppComponent().inject(this);
         parentLinearLayout = findViewById(R.id.parentLinearLayout);
         progressBar = findViewById(R.id.progressBar);
         etTitle = findViewById(R.id.etTitle);
