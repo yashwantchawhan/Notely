@@ -83,14 +83,23 @@ public class NoteDaoTest {
     }
     @Test
     public void filteredNotes() throws InterruptedException {
-
         mNoteDao.insert(NOTE);
         mNoteDao.insert(NOTE1);
         mNoteDao.insert(NOTE2);
-
-
         List<Note> list= getValue(mNoteDao.filteredNotes("SELECT * FROM Note WHERE star="+"'1'"));
-
         Assert.assertEquals(1,list.size());
+    }
+    @Test
+    public void updateNote() throws InterruptedException {
+        mNoteDao.insert(NOTE);
+        Note noteUpdate = getValue(mNoteDao.loadById(1));
+        noteUpdate.setFavourite(true);
+        mNoteDao.insert(noteUpdate);
+        Note note = getValue(mNoteDao.loadById(1));
+        Assert.assertEquals(true,note.isFavourite());
+
+
+
+
     }
 }
