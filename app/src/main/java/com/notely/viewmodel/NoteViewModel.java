@@ -35,10 +35,6 @@ public class NoteViewModel extends ViewModel {
         return repository.getNotes();
     }
 
-    public LiveData<List<Note>> filteredNotes(String query) {
-        return repository.filteredNotes(query);
-    }
-
     public Completable insertNote(final Note note) {
         return Completable.fromAction(() -> repository.insert(note));
     }
