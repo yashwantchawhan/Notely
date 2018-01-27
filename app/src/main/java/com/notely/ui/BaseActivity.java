@@ -17,7 +17,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
-    ViewModelProvider.Factory mViewModelFactory;
+    ViewModelProvider.Factory viewModelProviderFactory;
 
     protected NoteViewModel viewModel;
 
@@ -27,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         ((NoteApplication) getApplication()).getAppComponent().inject(this);
 
-        viewModel = ViewModelProviders.of(this, mViewModelFactory).get(NoteViewModel.class);
+        viewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(NoteViewModel.class);
 
     }
 
