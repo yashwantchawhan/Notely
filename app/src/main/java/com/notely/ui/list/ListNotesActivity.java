@@ -51,20 +51,23 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_notes);
-        getSupportActionBar().setElevation(0);
-        rvNotes = findViewById(R.id.rvNotes);
-        tvNoRecord = findViewById(R.id.tvNoRecord);
-        coordinatorLayout = findViewById(R.id.coordinateLayout);
-        listNotesAdapter = new ListNotesAdapter(noteArrayList);
-        rvNotes.setLayoutManager(new LinearLayoutManager(this));
-        rvNotes.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        listNotesAdapter.setAdapterActionListener(this);
-        rvNotes.setAdapter(listNotesAdapter);
-        ItemTouchHelper.Callback callback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, listNotesAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(rvNotes);
+
+        setUpToolBar();
+
+        setUpViews();
 
         // Create the observer which updates the UI.
+        createObserver();
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        observeLiveData();
+    }
+
+    private void observeLiveData() {
+        viewModel.getNotes().observe(this, noteObserver);
+    }
+
+    private void createObserver() {
         noteObserver = notes -> {
             // Update the UI, in this case, a TextView.
             if (notes != null && notes.size() > 0) {
@@ -78,9 +81,24 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
                 rvNotes.setVisibility(View.GONE);
             }
         };
+    }
 
-        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        viewModel.getNotes().observe(this, noteObserver);
+    private void setUpViews() {
+        rvNotes = findViewById(R.id.rvNotes);
+        tvNoRecord = findViewById(R.id.tvNoRecord);
+        coordinatorLayout = findViewById(R.id.coordinateLayout);
+        listNotesAdapter = new ListNotesAdapter(noteArrayList);
+        rvNotes.setLayoutManager(new LinearLayoutManager(this));
+        rvNotes.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        listNotesAdapter.setAdapterActionListener(this);
+        rvNotes.setAdapter(listNotesAdapter);
+        ItemTouchHelper.Callback callback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, listNotesAdapter);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(rvNotes);
+    }
+
+    private void setUpToolBar() {
+        getSupportActionBar().setElevation(0);
     }
 
     @Override
@@ -99,17 +117,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_filter:
-                if (isFilterApplied) {
-                    viewModel.getNotes().observe(this, noteObserver);
-                    isFilterApplied = false;
-                }
-                View view = getLayoutInflater().inflate(R.layout.filter_list, null);
-                find_views(view);
-
-                alertDialog = new AlertDialog.Builder(this)
-                        .setView(view)
-                        .show();
-
+                openFilterDialog();
                 break;
             case R.id.action_add:
                 Intent intent = new Intent(this, AddNoteActivity.class);
@@ -122,6 +130,19 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    private void openFilterDialog() {
+        if (isFilterApplied) {
+            viewModel.getNotes().observe(this, noteObserver);
+            isFilterApplied = false;
+        }
+        View view = getLayoutInflater().inflate(R.layout.filter_list, null);
+        find_views(view);
+
+        alertDialog = new AlertDialog.Builder(this)
+                .setView(view)
+                .show();
     }
 
     private void find_views(View view) {
@@ -152,6 +173,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     @Override
     public void onItemSwipe(Note note, int position) {
 
+        //Delete story/poem
         compositeDisposable.add(viewModel.deleteNote(note.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -178,6 +200,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
 
     @Override
     public void onStarOrFavClicked(Note note, int position) {
+        //observe click on fav or star
         compositeDisposable.add(viewModel.updateNote(note)
                 .subscribeOn(Schedulers.io())
                 .observeOn(

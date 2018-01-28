@@ -29,10 +29,9 @@ import timber.log.Timber;
 public class AddNoteActivity extends BaseActivity {
 
     private static final long DELAY_IN_FINISH = 1000;
-    private Menu mMenu;
+    private Menu menu;
     private EditText etTitle;
     private EditText etGist;
-    private RadioGroup rgNoteType;
     private ProgressBar progressBar;
     private LinearLayout parentLinearLayout;
     private String noteType = NoteType.STORY.toString();
@@ -42,32 +41,24 @@ public class AddNoteActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_notectivity);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setElevation(0);
-        parentLinearLayout = findViewById(R.id.parentLinearLayout);
-        progressBar = findViewById(R.id.progressBar);
-        etTitle = findViewById(R.id.etTitle);
-        etGist = findViewById(R.id.etGist);
-        helper = new TextViewUndoRedo(etGist);
-        rgNoteType = findViewById(R.id.rgNoteType);
-        rgNoteType.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case R.id.rbStory:
-                    noteType = NoteType.STORY.toString();
-                    break;
-                case R.id.rbPoem:
-                    noteType = NoteType.POEM.toString();
-                    break;
-            }
-        });
 
+        setContentView(R.layout.activity_add_notectivity);
+
+        setUpToolBar();
+
+        findView();
+
+        addListenerToGist();
+
+
+    }
+
+    private void addListenerToGist() {
+        // make undo visible while typing start in gist
         etGist.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                mMenu.findItem(R.id.action_undo).setVisible(true);
+                menu.findItem(R.id.action_undo).setVisible(true);
 
             }
 
@@ -81,8 +72,32 @@ public class AddNoteActivity extends BaseActivity {
 
             }
         });
+    }
 
+    private void findView() {
+        parentLinearLayout = findViewById(R.id.parentLinearLayout);
+        progressBar = findViewById(R.id.progressBar);
+        etTitle = findViewById(R.id.etTitle);
+        etGist = findViewById(R.id.etGist);
+        helper = new TextViewUndoRedo(etGist);
+        RadioGroup rgNoteType = findViewById(R.id.rgNoteType);
+        rgNoteType.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rbStory:
+                    noteType = NoteType.STORY.toString();
+                    break;
+                case R.id.rbPoem:
+                    noteType = NoteType.POEM.toString();
+                    break;
+            }
+        });
+    }
 
+    private void setUpToolBar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(0);
     }
 
     @Override
@@ -94,7 +109,7 @@ public class AddNoteActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.mMenu = menu;
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.add_screen_menu, menu);
         return super.onCreateOptionsMenu(menu);
 
@@ -106,12 +121,13 @@ public class AddNoteActivity extends BaseActivity {
 
         switch (item.getItemId()) {
             case R.id.action_undo:
+                //undo whatever added in gist
                 helper.undo();
                 break;
             case R.id.action_add:
-
+                // Add new note
                 if (!TextUtils.isEmpty(etTitle.getText()) && !TextUtils.isEmpty(etGist.getText())) {
-                    mMenu.findItem(R.id.action_undo).setVisible(false);
+                    menu.findItem(R.id.action_undo).setVisible(false);
                     showLoading();
                     Note note = new Note.NoteBuilder()
                             .setTitle(etTitle.getText().toString())
@@ -155,6 +171,7 @@ public class AddNoteActivity extends BaseActivity {
     }
 
     public void showLoading() {
+        // Show loading in center hide all other content
         parentLinearLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }

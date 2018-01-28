@@ -33,14 +33,15 @@ public class DetailsNoteActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_note);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setElevation(0);
-        editTitle = findViewById(R.id.etTitle);
-        editGist = findViewById(R.id.etGist);
-        tvDateUpdated = findViewById(R.id.tvDateUpdated);
-        helper = new TextViewUndoRedo(editGist);
+
+        setUpToolBar();
+
+        findView();
+
+        getIntentDataAndBind();
+    }
+
+    private void getIntentDataAndBind() {
         if (getIntent() != null) {
             note = getIntent().getParcelableExtra(ListNotesActivity.NOTE_ITEM);
             editTitle.setText(note.getTitle());
@@ -48,6 +49,20 @@ public class DetailsNoteActivity extends BaseActivity {
             tvDateUpdated.setText(getString(R.string.last_updated) + " " + Helper.getDate(this, note.getTime_created()));
 
         }
+    }
+
+    private void findView() {
+        editTitle = findViewById(R.id.etTitle);
+        editGist = findViewById(R.id.etGist);
+        tvDateUpdated = findViewById(R.id.tvDateUpdated);
+        helper = new TextViewUndoRedo(editGist);
+    }
+
+    private void setUpToolBar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(0);
     }
 
     @Override
@@ -63,9 +78,11 @@ public class DetailsNoteActivity extends BaseActivity {
 
         switch (item.getItemId()) {
             case R.id.action_undo:
-                helper.undo(); // perform undo
+                // add undo while editing
+                helper.undo();
                 break;
             case R.id.action_save:
+                // Save edited story/poem
                 if (!TextUtils.isEmpty(editTitle.getText()) && !TextUtils.isEmpty(editGist.getText())) {
                     note.setTitle(editTitle.getText().toString());
                     note.setGist(editGist.getText().toString());
@@ -103,6 +120,9 @@ public class DetailsNoteActivity extends BaseActivity {
         note = null;
     }
 
+    /*
+    * Method to manage visibility of menu item and edit fields
+    * */
     void setFocusable(boolean focusable) {
         if (focusable) {
             editTitle.setFocusable(true);
