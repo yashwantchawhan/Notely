@@ -6,9 +6,6 @@ import com.notely.db.AppDatabase;
 import com.notely.db.NoteDao;
 import com.notely.repository.NoteRepository;
 import com.notely.ui.BaseActivity;
-import com.notely.ui.add.AddNoteActivity;
-import com.notely.ui.details.DetailsNoteActivity;
-import com.notely.ui.list.ListNotesActivity;
 
 import javax.inject.Singleton;
 

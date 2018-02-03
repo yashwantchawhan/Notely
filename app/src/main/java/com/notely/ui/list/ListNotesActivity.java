@@ -29,6 +29,8 @@ import com.notely.utility.RecyclerItemTouchHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -46,6 +48,8 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     private boolean isFilterApplied = false;
     private Observer<List<Note>> noteObserver;
 
+    @Inject
+    DataManager dataManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,17 +142,17 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
             isFilterApplied = false;
         }
         View view = getLayoutInflater().inflate(R.layout.filter_list, null);
-        find_views(view);
+        findViews(view);
 
         alertDialog = new AlertDialog.Builder(this)
                 .setView(view)
                 .show();
     }
 
-    private void find_views(View view) {
+    private void findViews(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.rvFilterList);
         Button buttonApply = view.findViewById(R.id.apply);
-        FilterAdapter filterAdapter = new FilterAdapter(DataManager.getInstance().getFilters());
+        FilterAdapter filterAdapter = new FilterAdapter(dataManager.getFilters());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(filterAdapter);
         buttonApply.setOnClickListener(v -> {
@@ -203,8 +207,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
         //observe click on fav or star
         compositeDisposable.add(viewModel.updateNote(note)
                 .subscribeOn(Schedulers.io())
-                .observeOn(
-                        AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(Timber::e)
                 .subscribe(() -> {
                 }));
@@ -213,6 +216,5 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DataManager.getInstance().clearFilter();
     }
 }

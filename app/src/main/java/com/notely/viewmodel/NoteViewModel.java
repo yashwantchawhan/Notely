@@ -8,7 +8,6 @@ import com.notely.model.Note;
 import com.notely.repository.NoteRepository;
 import com.notely.utility.NoteType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,7 +46,7 @@ public class NoteViewModel extends ViewModel {
         return Completable.fromAction(() -> repository.updateNote(note));
     }
 
-    public LiveData<List<Note>> filteredNotes(ArrayList<Filter> filterList) {
+    public LiveData<List<Note>> filteredNotes(List<Filter> filterList) {
         StringBuilder queryBuilder = new StringBuilder();
         for (Filter filter : filterList) {
             if (filter.isChecked()) {

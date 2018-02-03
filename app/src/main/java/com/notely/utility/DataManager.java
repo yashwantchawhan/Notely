@@ -3,25 +3,26 @@ package com.notely.utility;
 import com.notely.model.Filter;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by yashwant on 25/01/18.
  */
 
+@Singleton
 public class DataManager {
 
-    private static DataManager dataManager;
-    final ArrayList<Filter> filters = new ArrayList<Filter>();
+    @Inject
+    public DataManager() {
 
-    public static DataManager getInstance() {
-        if (dataManager == null) {
-            dataManager = new DataManager();
-
-        }
-        return dataManager;
     }
 
-    public ArrayList<Filter> getFilters() {
+    final List<Filter> filters = new ArrayList<Filter>();
+
+    public List<Filter> getFilters() {
         if (filters.isEmpty()) {
             filters.add(new Filter(FilterType.Poem, false));
             filters.add(new Filter(FilterType.Star, false));
@@ -30,9 +31,5 @@ public class DataManager {
         }
 
         return filters;
-    }
-
-    public void clearFilter() {
-        filters.clear();
     }
 }

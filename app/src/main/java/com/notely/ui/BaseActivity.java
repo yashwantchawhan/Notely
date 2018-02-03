@@ -24,11 +24,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ((NoteApplication) getApplication()).getAppComponent().inject(this);
-
         viewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(NoteViewModel.class);
-
     }
 
     @Override

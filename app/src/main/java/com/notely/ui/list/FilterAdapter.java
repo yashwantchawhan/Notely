@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.notely.R;
 import com.notely.model.Filter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yashwant on 25/01/18.
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterViewHolder> {
 
-    private final ArrayList<Filter> filterArrayList;
+    private final List<Filter> filterArrayList;
 
-    public FilterAdapter(ArrayList<Filter> filterArrayList) {
+    public FilterAdapter(List<Filter> filterArrayList) {
         this.filterArrayList = filterArrayList;
     }
 
@@ -51,7 +51,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterView
         return filterArrayList.size();
     }
 
-    public ArrayList<Filter> getFilterList() {
+    public List<Filter> getFilterList() {
         return filterArrayList;
     }
 
