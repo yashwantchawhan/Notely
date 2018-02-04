@@ -48,8 +48,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     private boolean isFilterApplied = false;
     private Observer<List<Note>> noteObserver;
 
-    @Inject
-    DataManager dataManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +151,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     private void findViews(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.rvFilterList);
         Button buttonApply = view.findViewById(R.id.apply);
-        FilterAdapter filterAdapter = new FilterAdapter(dataManager.getFilters());
+        FilterAdapter filterAdapter = new FilterAdapter(DataManager.getInstance().getFilters());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(filterAdapter);
         buttonApply.setOnClickListener(v -> {
