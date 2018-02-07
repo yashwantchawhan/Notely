@@ -23,13 +23,10 @@ import com.notely.model.Note;
 import com.notely.ui.BaseActivity;
 import com.notely.ui.add.AddNoteActivity;
 import com.notely.ui.details.DetailsNoteActivity;
-import com.notely.utility.DataManager;
 import com.notely.utility.RecyclerItemTouchHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -47,7 +44,6 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     private AlertDialog alertDialog;
     private boolean isFilterApplied = false;
     private Observer<List<Note>> noteObserver;
-
 
 
     @Override
@@ -151,7 +147,7 @@ public class ListNotesActivity extends BaseActivity implements ListNotesAdapter.
     private void findViews(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.rvFilterList);
         Button buttonApply = view.findViewById(R.id.apply);
-        FilterAdapter filterAdapter = new FilterAdapter(DataManager.getInstance().getFilters());
+        FilterAdapter filterAdapter = new FilterAdapter(dataManager.getFilters());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(filterAdapter);
         buttonApply.setOnClickListener(v -> {

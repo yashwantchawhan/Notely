@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.notely.R;
 import com.notely.app.NoteApplication;
+import com.notely.utility.DataManager;
 import com.notely.viewmodel.NoteViewModel;
 
 import javax.inject.Inject;
@@ -18,7 +19,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Inject
     ViewModelProvider.Factory viewModelProviderFactory;
-
+    @Inject
+    protected DataManager dataManager;
     protected NoteViewModel viewModel;
 
     @Override

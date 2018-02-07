@@ -3,7 +3,6 @@ package com.notely.utility;
 import com.notely.model.Filter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -11,18 +10,14 @@ import javax.inject.Singleton;
 /**
  * Created by yashwant on 25/01/18.
  */
-
+@Singleton
 public class DataManager {
 
-    private static DataManager dataManager;
     final ArrayList<Filter> filters = new ArrayList<Filter>();
 
-    public static DataManager getInstance() {
-        if (dataManager == null) {
-            dataManager = new DataManager();
+    @Inject
+    DataManager() {
 
-        }
-        return dataManager;
     }
 
     public ArrayList<Filter> getFilters() {
@@ -36,7 +31,4 @@ public class DataManager {
         return filters;
     }
 
-    public void clearFilter() {
-        filters.clear();
-    }
 }

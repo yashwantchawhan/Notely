@@ -1,10 +1,5 @@
 package com.notely.di;
 
-import android.app.Application;
-
-import com.notely.db.AppDatabase;
-import com.notely.db.NoteDao;
-import com.notely.repository.NoteRepository;
 import com.notely.ui.BaseActivity;
 
 import javax.inject.Singleton;
@@ -18,14 +13,5 @@ import dagger.Component;
 @Singleton
 @Component(dependencies = {}, modules = {AppModule.class, RoomModule.class})
 public interface AppComponent {
-
-    NoteDao noteDao();
-
-    AppDatabase appDatabase();
-
-    NoteRepository noteRepository();
-
-    Application application();
-
     void inject(BaseActivity baseActivity);
 }
