@@ -39,7 +39,7 @@ public class ListNotesAdapter extends RecyclerView.Adapter<ListNotesAdapter.Note
         final Note note = noteArrayList.get(position);
         holder.tvTitle.setText("" + note.getTitle());
         holder.tvGist.setText("" + note.getGist());
-        holder.tvDate.setText("" + Helper.getDate(holder.tvDate.getContext(), note.getTime_created()));
+        holder.tvDate.setText("" + Helper.INSTANCE.getDate(holder.tvDate.getContext(), note.getTime_created()));
         if (note.isStar()) {
             holder.ivStar.setImageDrawable(holder.ivStar.getContext().getDrawable(R.drawable.ic_star));
         } else {

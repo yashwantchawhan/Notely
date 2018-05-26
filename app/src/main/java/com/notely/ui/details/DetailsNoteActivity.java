@@ -46,7 +46,7 @@ public class DetailsNoteActivity extends BaseActivity {
             note = getIntent().getParcelableExtra(ListNotesActivity.NOTE_ITEM);
             editTitle.setText(note.getTitle());
             editGist.setText(note.getGist());
-            tvDateUpdated.setText(getString(R.string.last_updated) + " " + Helper.getDate(this, note.getTime_created()));
+            tvDateUpdated.setText(getString(R.string.last_updated) + " " + Helper.INSTANCE.getDate(this, note.getTime_created()));
 
         }
     }

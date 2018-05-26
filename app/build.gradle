@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 
 
@@ -63,6 +64,10 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-android:2.12.0'
     //Timber
     implementation 'com.jakewharton.timber:timber:4.6.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
+}
+repositories {
+    mavenCentral()
 }
