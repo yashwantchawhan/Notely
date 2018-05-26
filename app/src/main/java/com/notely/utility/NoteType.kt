@@ -1,10 +1,10 @@
-package com.notely.utility;
+package com.notely.utility
 
 /**
  * Created by yashwant on 21/01/18.
  */
 
-public enum NoteType {
+enum class NoteType {
     STORY,
     POEM
 }
